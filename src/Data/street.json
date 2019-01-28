@@ -1,0 +1,50 @@
+[
+  {
+    "_id": 1,
+    "address1": "1745 T Street Southeast",
+    "address2": "",
+    "city": "Washington",
+    "state": "DC",
+    "postalCode": "20020",
+    "coordinates": {
+      "lat": 38.867033,
+      "lng": -76.979235
+    }
+  },
+  {
+    "_id": 2,
+    "address1": "1745 T Street Southeast1",
+    "address2": "",
+    "city": "Louisville",
+    "state": "KY",
+    "postalCode": "40219",
+    "coordinates": {
+      "lat": 38.1343013,
+      "lng": -85.6498512
+    }
+  },
+  {
+    "_id": 3,
+    "address1": "560 Penstock Drive",
+    "address2": "",
+    "city": "Grass Valley",
+    "state": "CA",
+    "postalCode": "95945",
+    "coordinates": {
+      "lat": 39.213076,
+      "lng": -121.077583
+    }
+  },
+  {
+    "_id": 4,
+    "address1": "150 Carter Street",
+    "address2": "",
+    "city": "Manchester",
+    "state": "CT",
+    "postalCode": "06040",
+    "coordinates": {
+      "lat": 41.76556000000001,
+      "lng": -72.473091
+    }
+  }
+]
