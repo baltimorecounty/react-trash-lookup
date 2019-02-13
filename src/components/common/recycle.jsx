@@ -5,8 +5,8 @@ const Recycle = props => {
  
   return (
     <i
-      onClick={props.onClick}
-      style={{ cursor: "pointer" }}
+     // onClick={props.onClick}
+      style={{ textAlign:"center" }}
       className={classes}
       aria-hidden="true"
     />
