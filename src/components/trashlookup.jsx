@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-//import Joi from "joi-browser";
+import Joi from "joi-browser";
 import PostData from "../Data/street.json";
 import SearchBox from "./searchBox";
 //import _ from "lodash";
@@ -22,11 +22,11 @@ class TrashLookUp extends Component {
       issearch: 0,
       selectedAddress: null,
       listData: null,
-      searchinputtype: { searchboxname: "" },
+      searchinputtype: { searchboxname:'' },
       errors: {}
     };
   }
-  // schema = { searchboxname: Joi.string().required() };
+   schema = { searchboxname: Joi.string().required().label("Search") };
   componentDidMount() {
     //  console.log("inside didmount");
     //const fakeAddress = [{ _id: "", name: "" }, ...getFakeAddress()];
@@ -54,79 +54,107 @@ class TrashLookUp extends Component {
       // searchQuery: address.address1,
     });
   };
-  validate = () => {
-    // const options = { abortEarly: false };
+ validate = () => {
+    const options = { abortEarly: false };
 
-    // const { error } = Joi.validate(
-    //   this.state.searchinputtype,
-    //   this.schema,
-    //   options
-    // );
+     const  display  = Joi.validate(
+       this.state.searchinputtype,
+       this.schema,
+       options
+     );
+     console.log(display);
+    // console.log(display.error);
 
-    // if (!error) return null;
+     if (!display) return null;
 
     // //console.log("not here in validate()");
-    // const errors = {};
-    // for (let item of error.details) errors[item.path[0]] = item.message;
+     const errors = {};
 
-    // return error;
+
+     for (let item of display.error.details) 
+        //console.log(item);
+        errors[item.path[0]] = item.message;
+
+     return errors;
 
     //---- for previous validation logic
-    const errors = {};
-    if (this.state.searchinputtype.searchboxname.trim() === "")
-      errors.searchboxname = "Search string is required";
-    return Object.keys(errors).length === 0 ? null : errors;
+   // const errors = {};
+   // if (this.state.searchinputtype.searchboxname.trim() === "")
+    //  errors.searchboxname = "Search string is required";
+   // return Object.keys(errors).length === 0 ? null : errors;
   };
-
+// validateProperty =({name,value}) => {
   validateProperty = input => {
-    //  const obj ={[input.name]: input.value};
-    //  const schema ={[input.name]: this.schema[input.name]};
+      const obj ={[input.name]: input.value};
+     const schema ={[input.name]: this.schema[input.name]};
     //  console.log(obj);
     //  console.log(schema);
     //  console.log(Joi.validate(obj,schema));
-    //  const {error} =  Joi.validate(obj,schema);
+     const error =  Joi.validate(obj,schema);
+      //console.log(error);
+      if (error.error=== null) {
+        return null;
+      }
+      else
+      {
+        const errors = {};
+        for (let item of error.error.details) 
+           //console.log(item);
+           errors[item.path[0]] = item.message;
+   
+        return errors;
 
-    //  if (error) return null;
-    //  return error.details;
+      }
+   
+
+ 
 
     //  console.log("inside vlaidateProperty");
-    if (input.name === "searchboxname") {
-      if (input.value.trim() === "") return "search is required";
-    }
+    //if (input.name === "searchboxname") {
+     // if (input.value.trim() === "") return "search is required";
+    //}
   };
 
   handleChange = ({ currentTarget: input }) => {
     //console.log("handel Search:" + input.value);
+    const searchinputtype = { ...this.state.searchinputtype };
     const errors = { ...this.state.errors };
     const errorMessage = this.validateProperty(input);
-    if (errorMessage) errors[input.name] = errorMessage;
-    else delete errors[input.name];
-    const searchinputtype = { ...this.state.searchinputtype };
-    searchinputtype[input.name] = input.value;
-    this.setState({ searchinputtype, errors });
-    //this.setState({ errors:  {} });
-    if (input.value.length === 0) {
+    console.log(errorMessage);
+    if (errorMessage){
+      //console.log("inside -if");
+      errors[input.name] = errorMessage;
+     // this.setState({  });
       this.setState({
-        searchQuery: input.value,
-        selectedAddress: null,
-        issearch: 0
+        searchQuery: '',
+       selectedAddress: null,
+       issearch: 0,
+       errors: errors[input.name] || {}
       });
-    } else {
-      this.setState({
-        searchQuery: input.value,
-        selectedAddress: null,
-        issearch: 1
-      });
+      //console.log("before return");
+     // return;
+  
     }
+    else{
+      //console.log("inside -else");
+      searchinputtype[input.name] = input.value;
+      this.setState({
+        searchQuery: input.value,
+        selectedAddress: null,
+        issearch: 1,
+        errors: errors[input.name] || {}
+      })
+    } 
+   
+ 
   };
 
   handleSearchClick = query => {
-    console.log("inside searchClicked");
+   // console.log("inside searchClicked");
 
     const errors = this.validate();
-    console.log(errors);
     this.setState({ errors: errors || {} });
-    console.log("before return");
+   // console.log("before return");
     if (errors) return;
 
     /*  if (this.props.searchbox === "") {
@@ -136,7 +164,7 @@ class TrashLookUp extends Component {
     } else { */
     this.setState({ issearch: 2 });
     // }
-    console.log("button is click");
+   // console.log("button is click");
   };
   handleKeyDown = query => {
     console.log("value:" + query);
@@ -227,7 +255,7 @@ class TrashLookUp extends Component {
               error={this.state.errors.searchboxname}
               onChange={this.handleChange}
               onClick={this.handleSearchClick}
-              onKeyDown={this.handleKeyDown}
+             // onKeyDown={this.handleKeyDown}
             />
           </div>
         </div>

@@ -16,12 +16,14 @@ const SearchBox = ({ name,value, onChange, onClick, onKeyDown,error }) => {
           value={value}
          // onChange={e => onChange(e.currentTarget.value)}
           onChange ={onChange}
-          onKeyDown={e => onKeyDown({value})}
+         // onKeyDown={e => onKeyDown({value})}
           error ={error}
         />
  
         <div  className="input-group-append">
-        <button onClick={e => onClick()} className="btn btn-outline">
+        <button
+      
+         onClick={e => onClick()} className="btn btn-outline">
          <Search />
         </button>
         </div>
