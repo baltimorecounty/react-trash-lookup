@@ -8,7 +8,8 @@ import _ from "lodash";
 class Form extends Component {
   state = {
     data: {},
-    errors: {}
+    errors: {},
+    selectedAddress: ""
   };
 
   validate = () => {
@@ -20,12 +21,18 @@ class Form extends Component {
     for (let item of error.details) errors[item.path[0]] = item.message;
     return errors;
   };
-  handleSearchClick = query => {
+  handleSearchClick = ({ currentTarget: input }) => {
+    console.log("inside button clicked");
+    const data = { ...this.state.data };
     const errors = this.validate();
     this.setState({ errors: errors || {} });
-    if (errors) return;
+   // if (errors) return;
+    data["eventType"] = 1;
+    data[input.name] = input.value;
 
-    this.setState({ issearch: 2 });
+   
+    this.setState({ data });
+    if (errors) return;
   };
   validateProperty = ({ name, value }) => {
     const obj = { [name]: value };
@@ -37,32 +44,67 @@ class Form extends Component {
   handleChange = ({ currentTarget: input }) => {
     const errors = { ...this.state.errors };
     const errorMessage = this.validateProperty(input);
-    if (errorMessage) errors[input.name] = errorMessage;
-    else delete errors[input.name];
-
     const data = { ...this.state.data };
+    data["selectedAddress"] = '';
+    if (errorMessage) {
+      errors[input.name] = errorMessage;
+     // data["issearch"] = 0;
+    } else {
+   
+      delete errors[input.name];
+     // data["issearch"] = 1;
+      data["searchQuery"] = input.value;
+    }
+    data["eventType"] = 0;
     data[input.name] = input.value;
-
     this.setState({ data, errors });
+    console.log(" errorMessage");
+    console.log(errorMessage);
   };
-  handleMouseOver = e => {
-    console.log("mouseover:" + e.address1);
+  handleAddressSelect = address => {
+    const data = { ...this.state.data };
+    console.log("inside handleAddressSelect");
+    //console.log(address);
+   // data["issearch"] = 3;
+    data["searchQuery"] = "";
+    data["searchboxname"] = "";
+    data["selectedAddress"] = address.address1;
+    data["eventType"] = 2;
+     console.log(  data["selectedAddress"]);
+    this.setState({ data });
+  };
 
+  handleMouseOver = e => {
+    // console.log("mouseover:" + i.address1);
+    // console.log(e.address1);
+    const data = { ...this.state.data };
+    // console.log(test);
+   // data["issearch"] = 1;
+    // data["searchQuery"] = e.address1;
+    data["selectedAddress"] = e.address1;
+    // console.log(test);
+    this.setState({ data });
+
+    //this.setState({
+    //  selectedAddress: e.address1
+
+    // });
     //console.log("address:" + address.address1);
     // address.setfocus();
-    this.setState({
-      selectedAddress: e.address1
-      // searchQuery: address.address1,
-    });
+    //this.setState({
+    // selectedAddress: e.address1
+    //  // searchQuery: address.address1,
+    // });
   };
   renderButton(label) {
     return (
       <button
+          type="button"
         className="btn btn-outline"
-        disabled={this.validate()}
+       // disabled={this.validate()}
         onClick={this.handleSearchClick}
       >
-        <Search />
+      <Search />
       </button>
     );
   }
@@ -74,28 +116,26 @@ class Form extends Component {
     );
   }
 
-  renderList(data1, valueProperty, textProperty,selectedAddress) {
-    console.log("inside renderList");
-    console.log(data1);
-    const { data, errors } = this.state;
- const listItems = data1.map((item, index) => (
-
-         <li
-     //selectedItem={selectedAddress}
-       tabIndex={index + 1}
-       key={item._id}
-           //onClick={this.handleAddressSelect(item)}
-           //onMouseOver={this.handleMouseOver(item)}
-          className={
-             _.lowerCase(item.address1) === _.lowerCase(this.state.selectedAddress)
-               ? "list-group-item active"
-               : "list-group-item"
-           }
-    >
-          {item.address1}
-        </li>
-       ));
-       return <ul className="list-group">{listItems}</ul>;
+  renderList(dataList, valueProperty, textProperty, selectedAddress) {
+  //  console.log("inside renderList");
+   // console.log(data1);
+    //const { data, errors } = this.state;
+    const listItems = dataList.map((item, index) => (
+      <li
+      //  tabIndex={index + 1}
+        key={item._id}
+        onClick={() => this.handleAddressSelect(item)}
+        onMouseOver={() => this.handleMouseOver(item)}
+        className={
+          _.lowerCase(item.address1) === _.lowerCase(selectedAddress)
+            ? "list-group-item active"
+            : "list-group-item"
+        }
+      >
+        {item.address1}
+      </li>
+    ));
+    return <ul className="list-group">{listItems}</ul>;
   }
 
   renderInput(name, label, type = "text") {
