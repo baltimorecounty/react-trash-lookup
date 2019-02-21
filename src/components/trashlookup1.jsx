@@ -10,36 +10,32 @@ import Leaf from "./common/leaf";
 import Recycle from "./common/recycle";
 import { getTrashService } from "../services/trashService";
 class TrashLookUp1 extends Form {
-  constructor(props) {
-    super(props);
-    //   this.itemSel = React.createRef();
-    // }
-  // eventType = 0 nothing
-  //eventType =1 --button clicked
-  //eventType =2 --select list
-    this.state = {
+
+    // eventType = 0 nothing//eventType =1 --button clicked //eventType =2 --select list
+
+    state = {
       data: {
-        selectedAddress: "",
-        searchboxname: "",
-       // issearch: 0,
-        searchQuery: "",
-        eventType:0
+        searchboxname: '',
+        selectedAddress:'',
+        eventType: 0
       },
       services: getTrashService(),
       addresses: PostData,
       errors: {}
     };
-  }
+
   schema = {
-    searchboxname: Joi.string()
-      .required()
-      .label("Search")
+    searchboxname: Joi.string().required(),
+      selectedAddress: Joi.string().allow(''),
+      searchQuery: Joi.string().allow(''),
+      eventType: Joi.number(),
   };
   displayText() {
     //const issearch = this.state.data["issearch"];
     const eventType = this.state.data["eventType"];
-    const selectedAddress = this.state.data["selectedAddress"];
-    if (eventType === 2) {
+  //  const selectedAddress = this.state.data["selectedAddress"];
+  const selectedAddress =  _.trim(this.state.data["searchQuery"]);
+    if (eventType === 2 || eventType === 1) {
       let message = [];
       message.push(<h6>Your Schedule</h6>);
       message.push("showing collection schedule for:");
@@ -54,36 +50,46 @@ class TrashLookUp1 extends Form {
   }
 
   getSearchResult() {
-    let searchQuery = this.state.data["searchQuery"];
-    const lenVal = _.trim(this.state.data["searchboxname"]).length;
-    let issearch = 0 ;//this.state.data["issearch"];
+    //let searchQuery = this.state.searchQuery;
+    let searchQuery =  _.trim(this.state.data["searchQuery"]);
+    const lenVal = _.trim(this.state.data["searchQuery"]).length;
+    let issearch = 0; //this.state.data["issearch"];
     let eventType = this.state.data["eventType"];
     let filtered = ""; // PostData;
-     console.log('eventType:lenVal--' + eventType +":" + lenVal);
-  
-    if (lenVal >0) 
-    {
-      if (eventType ===2 )
-      {
-         searchQuery= this.state.data["selectedAddress"];
-          filtered = PostData.filter(m =>
-          m.address1.toLowerCase()===searchQuery.toLowerCase());
-          issearch =3 
-      }
-      else 
-      {
-          filtered = PostData.filter(m =>
-          m.address1.toLowerCase().startsWith(searchQuery.toLowerCase()));
-          if (eventType ===0 )
-          {
-              filtered.length >0?issearch =1 : issearch=2;
-          }
-          else // (eventType ===1)
-          {
-              issearch =2;
-          }
-      }
-    } 
+
+
+    console.log("eventType:lenVal--" + eventType + ":" + lenVal);
+
+    if (lenVal > 0) {
+      if (eventType === 2) {
+        searchQuery = this.state.data["selectedAddress"];
+        filtered = PostData.filter(
+          m => m.address1.toLowerCase() === searchQuery.toLowerCase()
+        );
+        issearch = 2;
+      } 
+      else {
+            filtered = PostData.filter(m =>
+                      m.address1.toLowerCase().startsWith(searchQuery.toLowerCase()));
+            if (eventType === 0) 
+              {
+                filtered.length > 0 ? (issearch = 0) : (issearch = 2);
+              } // (eventType ===1)
+            else {
+                  // filtered = PostData.filter(
+                  //   m => m.address1.toLowerCase() === searchQuery.toLowerCase()
+                  // );
+                    if (filtered.length === 1)
+                     {
+                        issearch = 3;
+                     } 
+                     else 
+                     {
+                        issearch = 4;
+                      }
+                  }
+           }
+    }
 
     return { totalCount: filtered.length, data: filtered, issearch: issearch };
   }
@@ -106,21 +112,22 @@ class TrashLookUp1 extends Form {
         <p>{secondText}</p>
         <div className="row">
           <div className="col-5">
-            <div className="p-3 mb-2 bg-secondary text-white">
-              <div className="input-group mb-3">
-                {this.renderInput("searchboxname")}
+            <div className="p-3 mb-2 bg-secondary text-white">  
+               <div className="input-group"> 
+                {this.renderInput("searchboxname","Search")}
 
-                <div className="input-group-append">
-                      {this.renderButton("Search")}  
-                </div>
-                {this.renderError("searchboxname")}
-              </div>
-            </div>
+                 <div className="input-group-append "> 
+                   {this.renderButton("Search")} 
+                 </div>
+             
+               </div> 
+               {this.renderError("searchboxname")}   
+           </div>
           </div>
-        </div>
+         </div> 
 
         <div>
-          {issearch === 1 && totalCount > 0 ? (
+          {issearch === 0 && totalCount > 0 ? (
             <div className="col-4">
               {this.renderList(
                 data,
@@ -129,16 +136,16 @@ class TrashLookUp1 extends Form {
                 this.state.data["selectedAddress"]
               )}
             </div>
-          ) : issearch === 2 && totalCount === 0 ? (
-          <div>
-            <i>we could not find address {searchValue}</i>
-          </div>
-        ) : (
-          ""
+          ) : issearch === 1 && totalCount === 0 ? (
+            <div>
+              <i>we could not find address {searchValue}</i>
+            </div>
+          ) : (
+            ""
           )}
         </div>
-        {this.displayText()}
-        {issearch === 3 ? (
+        {/* {this.displayText()} */}
+        {issearch === 2 ? (
           <div className="row">
             <div className="col-5">
               <table className="table table-bordered table-sm">
@@ -173,11 +180,10 @@ class TrashLookUp1 extends Form {
               <a href="/test">{dowloadMessage}</a>
             </div>
           </div>
-        ) : issearch === 2 && totalCount > 0 ? (
+        ) : issearch === 4 && totalCount > 0 ? (
           <div>
             <i>we could not find {searchValue}</i>
-              <h6>Did you mean?</h6>{" "}
-            {data[0].address1}
+            <h6>Did you mean?</h6> {data[0].address1}
           </div>
         ) : (
           ""
