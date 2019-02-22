@@ -119,7 +119,6 @@ class Form extends Component {
     //const { data, errors } = this.state;
     const listItems = dataList.map((item, index) => (
       <li
-      //  tabIndex={index + 1}
         key={item._id}
         onClick={() => this.handleAddressSelect(item)}
         onMouseOver={() => this.handleMouseOver(item)}
