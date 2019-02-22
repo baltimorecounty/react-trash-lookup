@@ -28,11 +28,11 @@ class Form extends Component {
    
   };
   validate = () => {
-    console.log("inside validate()");
+    //console.log("inside validate()");
     const options = { abortEarly: false };
     const { error } = Joi.validate(this.state.data, this.schema, options);
    
-   console.log(error);
+   //console.log(error);
 
     if (!error) return null;
 
@@ -47,7 +47,7 @@ class Form extends Component {
 
 
   validateProperty = ({ name, value }) => {
-    console.log("inside validateProperty");
+    //console.log("inside validateProperty");
     const obj = { [name]: value };
     const schema = { [name]: this.schema[name] };
     const { error } = Joi.validate(obj, schema);
@@ -72,11 +72,11 @@ class Form extends Component {
     data["eventType"] =0;
     this.setState({ data, errors });
    // console.log(" errorMessage");
-    console.log(errorMessage);
+   // console.log(errorMessage);
   };
   handleAddressSelect = address => {
     const data = { ...this.state.data };
-    console.log("inside handleAddressSelect");
+    //console.log("inside handleAddressSelect");
     //console.log(address);
     data["searchQuery"] =address.address1;
     data["selectedAddress"] ='';
@@ -137,7 +137,7 @@ class Form extends Component {
 
   renderInput(name, label, type = "text") {
     const { data, errors } = this.state;
-    console.log(data);
+   // console.log(data);
     return (
       <Input
         type={type}

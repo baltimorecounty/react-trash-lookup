@@ -30,12 +30,10 @@ class TrashLookUp1 extends Form {
       searchQuery: Joi.string().allow(''),
       eventType: Joi.number(),
   };
-  displayText() {
-    //const issearch = this.state.data["issearch"];
-    const eventType = this.state.data["eventType"];
-  //  const selectedAddress = this.state.data["selectedAddress"];
-  const selectedAddress =  _.trim(this.state.data["searchQuery"]);
-    if (eventType === 2 || eventType === 1) {
+  displayText(issearch,topOneAddress) {
+
+  const selectedAddress =  _.trim(topOneAddress);
+    if (issearch === 2 || issearch === 3 ) {
       let message = [];
       message.push(<h6>Your Schedule</h6>);
       message.push("showing collection schedule for:");
@@ -50,22 +48,19 @@ class TrashLookUp1 extends Form {
   }
 
   getSearchResult() {
-    //let searchQuery = this.state.searchQuery;
+  
     let searchQuery =  _.trim(this.state.data["searchQuery"]);
     const lenVal = _.trim(this.state.data["searchQuery"]).length;
     let issearch = 0; //this.state.data["issearch"];
     let eventType = this.state.data["eventType"];
     let filtered = ""; // PostData;
 
-
-    console.log("eventType:lenVal--" + eventType + ":" + lenVal);
-
     if (lenVal > 0) {
       if (eventType === 2) {
-        searchQuery = this.state.data["selectedAddress"];
         filtered = PostData.filter(
           m => m.address1.toLowerCase() === searchQuery.toLowerCase()
         );
+     
         issearch = 2;
       } 
       else {
@@ -73,24 +68,18 @@ class TrashLookUp1 extends Form {
                       m.address1.toLowerCase().startsWith(searchQuery.toLowerCase()));
             if (eventType === 0) 
               {
-                filtered.length > 0 ? (issearch = 0) : (issearch = 2);
-              } // (eventType ===1)
+                filtered.length > 0 ? (issearch = 0) : (issearch = 1);
+              } 
             else {
-                  // filtered = PostData.filter(
-                  //   m => m.address1.toLowerCase() === searchQuery.toLowerCase()
-                  // );
-                    if (filtered.length === 1)
-                     {
-                        issearch = 3;
-                     } 
-                     else 
-                     {
-                        issearch = 4;
-                      }
+                  // issearch =1  there are no address 
+                  // issearch =3 there is only one address
+                  // issearch =4 there are multiple addresses 
+                  filtered.length ===0 ?  issearch = 1 : (filtered.length === 1? issearch =3 :issearch=4)
+      
                   }
            }
     }
-
+   
     return { totalCount: filtered.length, data: filtered, issearch: issearch };
   }
 
@@ -101,7 +90,7 @@ class TrashLookUp1 extends Form {
     const secondText = "  second paragraph shown here ";
     const dowloadMessage =
       "Download your complete four year scheduled in PDF format";
-    console.log(data);
+
     return (
       <React.Fragment>
         <p>
@@ -144,8 +133,9 @@ class TrashLookUp1 extends Form {
             ""
           )}
         </div>
-        {/* {this.displayText()} */}
-        {issearch === 2 ? (
+        {data.length > 0 ? this.displayText(issearch, data[0].address1):""}
+
+        {issearch === 2 || issearch === 3?(
           <div className="row">
             <div className="col-5">
               <table className="table table-bordered table-sm">
