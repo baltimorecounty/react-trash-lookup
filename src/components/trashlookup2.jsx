@@ -163,61 +163,51 @@ class TrashLookUp2 extends Form2 {
     );
   }
   renderWeekOfDay(type) {
-    // console.log("Inside - renderWeekOfDay()");
-
-    var nextCollection = "";
-    // nextCollection = this.trashNextCollectionDate();
-    const Date = "NextCollectionDate()";
-    type === 1
-      ? (nextCollection = this.trashNextCollectionDate())
+   return  type === 1
+      ? (this.trashNextCollectionDate())
       : type === 2
-      ? (nextCollection = this.recylceNextCollectionDate())
-      : (nextCollection = this.leafNextCollectionDate());
+      ? (this.recylceNextCollectionDate())
+      : (this.leafNextCollectionDate());
 
-    return nextCollection;
+ 
   }
   leafNextCollectionDate() {
-    var nextCollection = "";
+    
     const dayOfWeek = moment().day();
-    dayOfWeek === 5
-      ? (nextCollection = moment()
+    return dayOfWeek === 5
+      ? moment()
           .add(14, "d")
-          .format("D/M/YYYY"))
-      : (nextCollection = moment()
+          .format("D/M/YYYY")
+      : moment()
           .add(12 - dayOfWeek, "d")
-          .format("D/M/YYYY"));
-    return nextCollection;
+          .format("D/M/YYYY");
   }
 
   recylceNextCollectionDate() {
-    var nextCollection = "";
     const dayOfWeek = moment().day();
-    dayOfWeek >= 0 && dayOfWeek < 5
-      ? (nextCollection = moment()
+    return dayOfWeek >= 0 && dayOfWeek < 5
+      ? moment()
           .add(5 - dayOfWeek, "d")
-          .format("D/M/YYYY"))
-      : (nextCollection = moment()
+          .format("D/M/YYYY")
+      : moment()
           .add(6, "d")
-          .format("D/M/YYYY"));
-    return nextCollection;
+          .format("D/M/YYYY");
   }
 
   trashNextCollectionDate() {
-    var nextCollection = "";
     const dayOfWeek = moment().day();
 
-    dayOfWeek >= 1 && dayOfWeek < 6
-      ? (nextCollection = moment()
+    return dayOfWeek >= 1 && dayOfWeek < 6
+      ? moment()
           .add(6 - dayOfWeek, "d")
-          .format("D/M/YYYY"))
+          .format("D/M/YYYY")
       : dayOfWeek === 6
-      ? (nextCollection = moment()
+      ? moment()
           .add(2, "d")
-          .format("D/M/YYYY"))
-      : (nextCollection = moment()
+          .format("D/M/YYYY")
+      : moment()
           .add(1, "d")
-          .format("D/M/YYYY"));
-    return nextCollection;
+          .format("D/M/YYYY");
   }
 
   render() {
