@@ -5,7 +5,7 @@ import Search from "../common/search";
 import _ from "lodash";
 //import Select from "./select";
 //import "../App.css";
-class Form extends Component {
+class Form2 extends Component {
   state = {
     data: {},
     errors: {}
@@ -147,4 +147,4 @@ class Form extends Component {
   }
 }
 
-export default Form;
+export default Form2;

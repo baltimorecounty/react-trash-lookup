@@ -1,5 +1,5 @@
 import React from "react";
-import Form from "./common/form";
+import Form2 from "./common/form2";
 import Joi from "joi-browser";
 import PostData from "../Data/street.json";
 //import SearchBox from "./searchBox";
@@ -9,7 +9,8 @@ import Trash from "./common/trash";
 import Leaf from "./common/leaf";
 import Recycle from "./common/recycle";
 import { getTrashService } from "../services/trashService";
-class TrashLookUp1 extends Form {
+import * as moment from "moment";
+class TrashLookUp2 extends Form2 {
   // eventType = 0 nothing//eventType =1 --button clicked //eventType =2 --select list
 
   state = {
@@ -21,7 +22,6 @@ class TrashLookUp1 extends Form {
     services: getTrashService(),
     addresses: PostData,
     errors: {}
-   
   };
 
   schema = {
@@ -39,8 +39,6 @@ class TrashLookUp1 extends Form {
   //   //  console.log(data["searchboxname"]);
   //   this.setState({ data });
   // };
-
-
 
   displayText(issearch, topOneAddress) {
     const selectedAddress = _.trim(topOneAddress);
@@ -62,10 +60,10 @@ class TrashLookUp1 extends Form {
     console.log("inside getSearchResult()");
     const stateData = this.state.data;
     let searchQuery = _.trim(stateData["searchQuery"]);
-    console.log('searchQuery:' + searchQuery);
+    console.log("searchQuery:" + searchQuery);
     const lenVal = _.trim(stateData["searchQuery"]).length;
     let issearch = 0;
-   let eventType = stateData["eventType"];
+    let eventType = stateData["eventType"];
 
     let filtered = ""; // PostData;
     console.log("eventype:lenval--" + eventType + ":" + lenVal);
@@ -128,7 +126,14 @@ class TrashLookUp1 extends Form {
                     )}
                   </td>
                   <td>{service.collectionDays}</td>
-                  <td>{service.nextCollection}</td>
+                  <td>
+                    {service.type === "Trash"
+                      ? this.renderWeekOfDay(1)
+                      : service.type === "Leaf"
+                      ? this.renderWeekOfDay(3)
+                      : this.renderWeekOfDay(2)}
+                  </td>
+                  {/* <td>{service.nextCollection}</td> */}
                 </tr>
               ))}
             </tbody>
@@ -157,6 +162,63 @@ class TrashLookUp1 extends Form {
       </div>
     );
   }
+  renderWeekOfDay(type) {
+    // console.log("Inside - renderWeekOfDay()");
+
+    var nextCollection = "";
+    // nextCollection = this.trashNextCollectionDate();
+    const Date = "NextCollectionDate()";
+    type === 1
+      ? (nextCollection = this.trashNextCollectionDate())
+      : type === 2
+      ? (nextCollection = this.recylceNextCollectionDate())
+      : (nextCollection = this.leafNextCollectionDate());
+
+    return nextCollection;
+  }
+  leafNextCollectionDate() {
+    var nextCollection = "";
+    const dayOfWeek = moment().day();
+    dayOfWeek === 5
+      ? (nextCollection = moment()
+          .add(14, "d")
+          .format("D/M/YYYY"))
+      : (nextCollection = moment()
+          .add(12 - dayOfWeek, "d")
+          .format("D/M/YYYY"));
+    return nextCollection;
+  }
+
+  recylceNextCollectionDate() {
+    var nextCollection = "";
+    const dayOfWeek = moment().day();
+    dayOfWeek >= 0 && dayOfWeek < 5
+      ? (nextCollection = moment()
+          .add(5 - dayOfWeek, "d")
+          .format("D/M/YYYY"))
+      : (nextCollection = moment()
+          .add(6, "d")
+          .format("D/M/YYYY"));
+    return nextCollection;
+  }
+
+  trashNextCollectionDate() {
+    var nextCollection = "";
+    const dayOfWeek = moment().day();
+
+    dayOfWeek >= 1 && dayOfWeek < 6
+      ? (nextCollection = moment()
+          .add(6 - dayOfWeek, "d")
+          .format("D/M/YYYY"))
+      : dayOfWeek === 6
+      ? (nextCollection = moment()
+          .add(2, "d")
+          .format("D/M/YYYY"))
+      : (nextCollection = moment()
+          .add(1, "d")
+          .format("D/M/YYYY"));
+    return nextCollection;
+  }
 
   render() {
     const { totalCount, data, issearch } = this.getSearchResult();
@@ -166,6 +228,7 @@ class TrashLookUp1 extends Form {
     return (
       <React.Fragment>
         <p>
+          {this.renderWeekOfDay()}
           Showing {totalCount} -issearchval -{issearch} address in the database.
         </p>
         <h6>Find Your Collection Schedule.</h6>
@@ -209,4 +272,4 @@ class TrashLookUp1 extends Form {
   }
 }
 
-export default TrashLookUp1;
+export default TrashLookUp2;

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import TrashLookUp1 from "./components/trashlookup1";
+import TrashLookUp1 from "./components/trashlookup2";
 
 
 class App extends Component {
