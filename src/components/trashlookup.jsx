@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PostData from "../Data/street.json";
+import AddressData from "../Data/street.json";
 import SearchBox from "./searchBox";
 import _ from "lodash";
 import ListGroup from "./listGroup";
@@ -12,8 +12,8 @@ class Movies extends Component {
   state = {
     services: getTrashService(),
     searchQuery: "",
-	addresses: PostData,
-	filteredAddresses: PostData,
+	addresses: AddressData,
+	filteredAddresses: AddressData,
     issearch: 0,
     selectedAddress: null
   };
@@ -55,18 +55,18 @@ class Movies extends Component {
   getSearchResult = () => {
     const searchQuery = this.state.searchQuery;
     const issearch = this.state.issearch;
-    let filtered = ""; // PostData;
+    let filtered = ""; // AddressData;
     // console.log("value of searchQuery " + searchQuery);
     //console.log("value of isearch is " + issearch);
     if (issearch === 1) {
       console.log("searchclicked - false ");
       if (searchQuery)
-        filtered = PostData.filter(m =>
+        filtered = AddressData.filter(m =>
           m.address1.toLowerCase().startsWith(searchQuery.toLowerCase())
         );
     } else {
       if (issearch === 2) console.log("searchclicked - true ");
-      filtered = PostData.filter(m =>
+      filtered = AddressData.filter(m =>
         m.address1.toLowerCase().startsWith(searchQuery.toLowerCase())
       );
     }
