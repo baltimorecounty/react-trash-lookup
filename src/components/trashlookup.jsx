@@ -17,6 +17,8 @@ class Movies extends Component {
     selectedAddress: null
   };
 
+
+  
   // componentDidMount() {
   // console.log("inside didmount");
   //const fakeAddress = [{ _id: "", name: "" }, ...getFakeAddress()];
