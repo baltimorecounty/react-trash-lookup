@@ -36,10 +36,12 @@ class Movies extends Component {
   handleSearch = query => {
     console.log("handel Search:" + query);
     if (query.length === 0) {
-      this.setState({ searchQuery: query, issearch: 0 });
+      this.setState({ issearch: 0 });
     } else {
-      this.setState({ searchQuery: query, issearch: 1 });
-    }
+      this.setState({ issearch: 1 });
+	}
+
+	this.setState({ searchQuery: query });
   };
 
   handleSearchClick = query => {
