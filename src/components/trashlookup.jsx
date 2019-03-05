@@ -12,7 +12,8 @@ class Movies extends Component {
   state = {
     services: getTrashService(),
     searchQuery: "",
-    addresses: PostData,
+	addresses: PostData,
+	filteredAddresses: PostData,
     issearch: 0,
     selectedAddress: null
   };
