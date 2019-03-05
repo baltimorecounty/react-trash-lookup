@@ -37,8 +37,10 @@ class Movies extends Component {
   handleSearch = query => {
 	console.log("handel Search:" + query);
 	const isSearch = query.length === 0 ? 0 : 1;
-
-	this.setState({ searchQuery: query, issearch: isSearch  });
+	const filteredAddresses = this.state.addresses.filter(address => {
+		return address.address1.indexOf(query) > -1;
+	})
+	this.setState({ searchQuery: query, issearch: isSearch, filteredAddresses  });
   };
 
   handleSearchClick = query => {
