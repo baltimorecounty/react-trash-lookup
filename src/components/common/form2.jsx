@@ -23,7 +23,7 @@ class Form2 extends Component {
     data["selectedAddress"] = "";
 
     this.setState({ data });
-     //this.doSearch(data["searchQuery"]);
+    //this.doSearch(data["searchQuery"]);
   };
   validate = () => {
     //console.log("inside validate()");
@@ -57,18 +57,18 @@ class Form2 extends Component {
     errorMessage
       ? (errors[input.name] = errorMessage)
       : delete errors[input.name];
-    
 
     data[input.name] = input.value;
     data["searchQuery"] = input.value;
     data["selectedAddress"] = "";
-   data["eventType"] = 0;
-
+    data["eventType"] = 0;
+    data["index"] = null;
     this.setState({ data, errors });
     //this.doChange(input.value);
 
     // console.log(" errorMessage");
     // console.log(errorMessage);
+    //
   };
   handleAddressSelect = address => {
     const data = { ...this.state.data };
@@ -82,12 +82,93 @@ class Form2 extends Component {
     // console.log("Show ---data");
     // console.log(data);
   };
-
-  handleMouseOver = e => {
+  handleFocus = e => {
+    console.log("inside -handleFocus");
+    // const data = { ...this.state.data };
+    // data["selectedAddress"] = e.address1;
+    //this.setState({ data });
+  };
+  handleMouseOver = (e, index) => {
+    console.log("handleMoverOver");
     const data = { ...this.state.data };
-    data["selectedAddress"] = e.address1;
+    data["selectedAddress"] = e.address1; //'1745 T Street Southeast';// e.address1;
+    data["index"] = index;
+    console.log("index:" + index);
     this.setState({ data });
   };
+  handleKeyDown = e => {
+
+    //38 -- key up
+    //40 --- key down
+
+    if ((e.keyCode === 40 || e.keyCode === 38) || e.keyCode===13) {
+      this.handleKeyDownPullData(e.keyCode);
+    }
+    
+  };
+  handleKeyDownPullData(keycode) {
+    const searchQuery =_.trim(this.state.data["searchQuery"]);
+    const addresses = this.state.addresses;
+    const indexSelected = this.state.data["index"];
+    const data = { ...this.state.data };
+   console.log( searchQuery);
+  if (searchQuery.length > 0 )
+   {
+    const filtered = addresses.filter(m =>
+      m.address1.toLowerCase().startsWith(searchQuery.toLowerCase())
+    );
+
+    if (keycode ===40 )
+    {
+      console.log('inside keycode ===40 ');
+    for (let i = 0; i < filtered.length; i++) {
+        if (indexSelected === null) 
+        {
+          data["selectedAddress"] = filtered[i].address1; 
+          data["index"] = i;
+          this.setState({ data });
+          break;
+        } 
+        else 
+        {
+            if (data["index"] < i) 
+            {
+              data["selectedAddress"] = filtered[i].address1; 
+              data["index"] = i;
+              this.setState({ data });
+              break;
+            }
+        }
+      }
+    }
+    else if (keycode === 38)
+    {
+      const choosenIndex =  data["index"]
+      if (choosenIndex > 0 )
+      {
+      data["selectedAddress"] = filtered[choosenIndex-1].address1; 
+      data["index"] = choosenIndex -1;
+      this.setState({ data });
+      }
+    }
+    else
+    {
+        if ( data["selectedAddress"].length > 0  )
+        {
+          data["searchQuery"] = data["selectedAddress"];
+          data["selectedAddress"] = "";
+          data["searchboxname"] = "";
+          data["eventType"] = 2;
+          this.setState({ data });
+        }
+    }
+  }
+};
+
+  //console.log("address:" + address.address1);
+  //this.setState({selectedAddress: address.address1 });
+  //this.setState({ ListData: address.address1 });
+
   renderButton(label) {
     return (
       <button
@@ -114,9 +195,11 @@ class Form2 extends Component {
     //const { data, errors } = this.state;
     const listItems = dataList.map((item, index) => (
       <li
+        ref={item._id}
         key={item._id}
         onClick={() => this.handleAddressSelect(item)}
-        onMouseOver={() => this.handleMouseOver(item)}
+        onMouseOver={() => this.handleMouseOver(item, index)}
+        onFocus={() => this.handleFocus(item)}
         className={
           _.lowerCase(item.address1) === _.lowerCase(selectedAddress)
             ? "list-group-item active"
@@ -141,6 +224,7 @@ class Form2 extends Component {
         onChange={this.handleChange}
         className="form-control"
         placeholder="please type 1"
+        onKeyDown={this.handleKeyDown}
         //error={errors[name]}
       />
     );

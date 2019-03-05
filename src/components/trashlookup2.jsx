@@ -10,6 +10,7 @@ import Leaf from "./common/leaf";
 import Recycle from "./common/recycle";
 import { getTrashService } from "../services/trashService";
 import * as moment from "moment";
+import ScheduleTable from './common/scheduleTable';
 class TrashLookUp2 extends Form2 {
   // eventType = 0 nothing//eventType =1 --button clicked //eventType =2 --select list
 
@@ -17,6 +18,7 @@ class TrashLookUp2 extends Form2 {
     data: {
       searchboxname: "",
       selectedAddress: "",
+      index :null,
       eventType: 0
     },
     services: getTrashService(),
@@ -39,7 +41,14 @@ class TrashLookUp2 extends Form2 {
   //   //  console.log(data["searchboxname"]);
   //   this.setState({ data });
   // };
-
+  componentDidMount() {
+      console.log("inside didmount");
+  
+  }
+  componentDidUpdate() {
+     console.log("inside componentDidUpdate" + this.state.searchQuery);
+    // this.handleFocus(1);
+  }
   displayText(issearch, topOneAddress) {
     const selectedAddress = _.trim(topOneAddress);
     if (issearch === 2 || issearch === 3) {
@@ -96,54 +105,20 @@ class TrashLookUp2 extends Form2 {
     return { totalCount: filtered.length, data: filtered, issearch: issearch };
   }
 
-  renderConditionTable(issearch, data, totalCount) {
-    const dowloadMessage =
-      "Download your complete four year scheduled in PDF format";
+  // renderConditionTable(issearch, data, totalCount) {
+  //   const dowloadMessage =
+  //     "Download your complete four year scheduled in PDF format";
 
-    return (
-      <div className="row">
-        <div className="col-5">
-          <table className="table table-bordered table-sm">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Image</th>
-                <th>Collection Days</th>
-                <th>Next Collection</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.services.map(service => (
-                <tr key={service._id}>
-                  <td>{service.type}</td>
-                  <td align="center">
-                    {service.type === "Trash" ? (
-                      <Trash />
-                    ) : service.type === "Leaf" ? (
-                      <Leaf />
-                    ) : (
-                      <Recycle />
-                    )}
-                  </td>
-                  <td>{service.collectionDays}</td>
-                  <td>
-                    {service.type === "Trash"
-                      ? this.renderWeekOfDay(1)
-                      : service.type === "Leaf"
-                      ? this.renderWeekOfDay(3)
-                      : this.renderWeekOfDay(2)}
-                  </td>
-                  {/* <td>{service.nextCollection}</td> */}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <h6>Download</h6>
-          <a href="/test">{dowloadMessage}</a>
-        </div>
-      </div>
-    );
-  }
+  //   return (
+  //     <div className="row">
+  //       <div className="col-5">
+  //        <ScheduleTable services = 
+  //         <h6>Download</h6>
+  //         <a href="/test">{dowloadMessage}</a>
+  //       </div>
+  //     </div>
+  //   );
+  // }
   renderNotFoundMessage() {
     console.log("inside -renderNotFoundMessage");
     const searchValue = this.state.data["searchboxname"];
@@ -162,17 +137,18 @@ class TrashLookUp2 extends Form2 {
       </div>
     );
   }
-  renderWeekOfDay(type) {
-   return  type === 1
-      ? (this.trashNextCollectionDate())
-      : type === 2
-      ? (this.recylceNextCollectionDate())
-      : (this.leafNextCollectionDate());
+  renderWeekOfDay = type =>  {
+   // console.log('inside - renderWeekOfDay');
+    return  type === 1
+       ? (this.trashNextCollectionDate())
+       : type === 2
+       ? (this.recylceNextCollectionDate())
+       : (this.leafNextCollectionDate());
 
  
   }
   leafNextCollectionDate() {
-    
+
     const dayOfWeek = moment().day();
     return dayOfWeek === 5
       ? moment()
@@ -195,6 +171,7 @@ class TrashLookUp2 extends Form2 {
   }
 
   trashNextCollectionDate() {
+   // console.log('inside - trashNextCollectionDate');
     const dayOfWeek = moment().day();
 
     return dayOfWeek >= 1 && dayOfWeek < 6
@@ -218,7 +195,7 @@ class TrashLookUp2 extends Form2 {
     return (
       <React.Fragment>
         <p>
-          {this.renderWeekOfDay()}
+       
           Showing {totalCount} -issearchval -{issearch} address in the database.
         </p>
         <h6>Find Your Collection Schedule.</h6>
@@ -240,7 +217,7 @@ class TrashLookUp2 extends Form2 {
 
         {data.length > 0 ? this.displayText(issearch, data[0].address1) : ""}
         {issearch === 0 && totalCount > 0 ? (
-          <div className="col-4">
+          <div className="col-4"  >
             {this.renderList(
               data,
               data._id,
@@ -249,7 +226,12 @@ class TrashLookUp2 extends Form2 {
             )}
           </div>
         ) : issearch === 2 || issearch === 3 ? (
-          this.renderConditionTable(issearch, data, totalCount)
+        
+          <div className="row">
+            <div className="col-5">
+               <ScheduleTable services = {this.state.services} renderWeekOfDay= {this.renderWeekOfDay} /> 
+             </div>
+           </div>
         ) : issearch === 4 && totalCount > 0 ? (
           this.renderDidYouMean(data)
         ) : issearch === 1 && totalCount === 0 ? (
