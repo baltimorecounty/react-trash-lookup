@@ -15,10 +15,12 @@ class Movies extends Component {
     addresses: PostData,
     issearch: 0,
     selectedAddress: null
+    
+    
   };
 
 
-  
+
   // componentDidMount() {
   // console.log("inside didmount");
   //const fakeAddress = [{ _id: "", name: "" }, ...getFakeAddress()];
