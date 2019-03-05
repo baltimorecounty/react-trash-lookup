@@ -77,6 +77,7 @@ class Movies extends Component {
   };
 
   render() {
+	const { filteredAddresses } = this.state;
     const { totalCount, data: data, issearch } = this.getSearchResult();
 
     const searchQuery = this.state.addresses;
@@ -93,7 +94,7 @@ class Movies extends Component {
           {issearch === 1 && totalCount > 0 ? (
             <div className="col-5">
               <ListGroup
-                items={data}
+                items={filteredAddresses}
                 selectedItem={this.state.selectedAddress}
                 onItemSelect={this.handleAddressSelect}
               />
