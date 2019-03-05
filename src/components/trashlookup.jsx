@@ -34,14 +34,10 @@ class Movies extends Component {
     });
   };
   handleSearch = query => {
-    console.log("handel Search:" + query);
-    if (query.length === 0) {
-      this.setState({ issearch: 0 });
-    } else {
-      this.setState({ issearch: 1 });
-	}
+	console.log("handel Search:" + query);
+	const isSearch = query.length === 0 ? 0 : 1;
 
-	this.setState({ searchQuery: query });
+	this.setState({ searchQuery: query, issearch: isSearch  });
   };
 
   handleSearchClick = query => {
