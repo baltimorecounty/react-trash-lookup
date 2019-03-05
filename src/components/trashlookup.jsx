@@ -78,7 +78,8 @@ class Movies extends Component {
 
   render() {
 	const { filteredAddresses } = this.state;
-    const { totalCount, data: data, issearch } = this.getSearchResult();
+	const totalCount = filteredAddresses.length;
+    const { data: data, issearch } = this.getSearchResult();
 
     const searchQuery = this.state.addresses;
     const searchValue = this.state.searchQuery;
