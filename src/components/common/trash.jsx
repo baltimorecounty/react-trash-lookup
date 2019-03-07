@@ -5,8 +5,6 @@ const Trash = props => {
 
   return (
     <i
-      //onClick={props.onClick}
-      //style={{ cursor: "pointer" }}
       className={classes}
       aria-hidden="true"
     />
