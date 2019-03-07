@@ -113,7 +113,6 @@ class TrashLookUp extends Form {
   render() {
     const { data } = this.addressData();
     const isCollectionScheduleTextHidden = this.state.isCollectionScheduleTextHidden;
-
     return (
       <React.Fragment>
 
