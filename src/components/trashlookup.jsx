@@ -55,7 +55,6 @@ class TrashLookUp extends Form {
    renderConditionTable() {
      const dowloadMessage =
        "Download your complete four year scheduled in PDF format";
-
     return (
       <div className="row">
         <div className="col-5">
