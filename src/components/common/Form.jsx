@@ -5,8 +5,8 @@ class Form extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: '',
-      isHidden: true,
+      selectedAddress: '',
+      isCollectionScheduleTextHidden: true,
       isAutoTextHidden: false
     }
     this.handleClick = this.handleClick.bind(this);
@@ -14,7 +14,7 @@ class Form extends Component {
 
   handleClick(event) {
 
-    this.setState({ isAutoTextHidden: false, isHidden: true, value: '' });
+    this.setState({ isAutoTextHidden: false, isCollectionScheduleTextHidden: true, selectedAddress: '' });
   }
   renderList(dataList) {
     const items = dataList.map((item, index) => (
@@ -38,9 +38,9 @@ class Form extends Component {
                 {item.label}
               </div>
             }
-            value={this.state.value}
-            onChange={e => this.setState({ value: e.target.value, isHidden: true, isAutoTextHidden: false })}
-            onSelect={value => this.setState({ value, isHidden: false, isAutoTextHidden: true })}
+            value={this.state.selectedAddress}
+            onChange={e => this.setState({ selectedAddress: e.target.value, isCollectionScheduleTextHidden: true, isAutoTextHidden: false })}
+            onSelect={value => this.setState({ selectedAddress:value, isCollectionScheduleTextHidden: false, isAutoTextHidden: true })}
           />
           <i className="fa fa-search"></i>
         </div>

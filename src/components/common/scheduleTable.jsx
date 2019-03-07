@@ -1,7 +1,5 @@
 import React from "react";
-import Trash from "./trash";
-import Leaf from "./leaf";
-import Recycle from "./recycle";
+import Icon from "./Icon";
 const ScheduleTable = ({ services, renderWeekOfDay }) => {
 
 
@@ -19,11 +17,11 @@ const ScheduleTable = ({ services, renderWeekOfDay }) => {
           <tr key={service._id}>
             <td align="center">
               {service.type === "Trash" ? (
-                <Trash />
+                <Icon iconClass="trash" />
               ) : service.type === "Leaf" ? (
-                <Leaf />
+                <Icon iconClass="leaf" />
               ) : (
-                <Recycle />
+                <Icon iconClass="recycle" />
               )}{service.type}
             </td>
             <td>{service.collectionDays}</td>

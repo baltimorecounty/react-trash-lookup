@@ -54,8 +54,12 @@ td i {
 }
 
 /* align glyph */
-.left-addon .fa  { left:  0px;}
-.right-addon .fa { right: 0px;}
+.left-addon .fa  { 
+  left:  0px;
+}
+.right-addon .fa { 
+  right: 0px;
+}
 
 /* add padding  */
  .left-addon input  { padding-left:  10px; }
