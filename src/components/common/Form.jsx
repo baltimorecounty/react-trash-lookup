@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Autocomplete from "react-autocomplete";
 
-
 class Form extends Component {
   constructor(props) {
     super(props)

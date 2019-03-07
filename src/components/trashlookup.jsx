@@ -52,7 +52,6 @@ class TrashLookUp extends Form {
         }
     return {  data: filtered };
   }
-
    renderConditionTable() {
      const dowloadMessage =
        "Download your complete four year scheduled in PDF format";
