@@ -1,5 +1,5 @@
 import React from "react";
-import Form2 from "./common/form2";
+import Form from "./common/form";
 import PostData from "../Data/street.json";
 import { Button } from 'reactstrap';
 import _ from "lodash";
@@ -8,7 +8,7 @@ import _ from "lodash";
 import { getTrashService } from "../services/trashService";
 import * as moment from "moment";
 import ScheduleTable from './common/scheduleTable';
-class TrashLookUp2 extends Form2 {
+class TrashLookUp extends Form {
  
   displayText() {
     const selectedAddress = _.trim(this.state.value);
@@ -154,4 +154,4 @@ class TrashLookUp2 extends Form2 {
   }
 }
 
-export default TrashLookUp2;
+export default TrashLookUp;
