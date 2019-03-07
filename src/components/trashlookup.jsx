@@ -1,5 +1,5 @@
 import React from "react";
-import Form from "./common/form";
+import Form from "./common/Form";
 import PostData from "../Data/street.json";
 import { Button } from 'reactstrap';
 import _ from "lodash";

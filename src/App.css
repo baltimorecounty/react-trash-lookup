@@ -28,6 +28,37 @@
 .App-link {
   color: #61dafb;
 }
+[class^="icon-"],
+[class*=" icon-"] {
+  display: inline-block;
+  width: 100%;
+}
+td i {
+  text-align: center;
+}
+
+/* .list-group-item1
+{
+  overflow:hidden;  
+  position: relative;
+  display: block;
+  padding: 5px 15px;
+  margin-bottom: -1px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+.list-group-item1 :active
+{
+  background-color:blue;
+} */
+.container1{
+  flex: 1;
+  justify-Content: 'flex-start';
+  align-Items: 'center';
+  background-Color: '#2d1a1a';
+  width: 320;
+}
+
 
 @keyframes App-logo-spin {
   from {
@@ -37,3 +68,26 @@
     transform: rotate(360deg);
   }
 }
+
+
+ /* enable absolute positioning */
+.inner-addon {
+  position: relative;
+}
+
+/* style glyph */
+.inner-addon .fa {
+  position: absolute;
+  padding: 8px 158px;
+  pointer-events: none;
+  color: #aaa;
+}
+
+/* align glyph */
+.left-addon .fa  { left:  0px;}
+.right-addon .fa { right: 0px;}
+
+/* add padding  */
+ .left-addon input  { padding-left:  10px; }
+.right-addon input { padding-right: 80px; } 
+ 
