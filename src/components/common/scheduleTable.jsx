@@ -3,22 +3,20 @@ import Trash from "./trash";
 import Leaf from "./leaf";
 import Recycle from "./recycle";
 const ScheduleTable = ({ services, renderWeekOfDay }) => {
-  // const {services,renderWeekOfDay} = props;
+
 
   return (
     <table className="table table-bordered table-sm">
       <thead>
         <tr>
           <th>Type</th>
-          <th>Image</th>
           <th>Collection Days</th>
           <th>Next Collection</th>
         </tr>
       </thead>
-      <tbody>
+       <tbody>
         {services.map(service => (
           <tr key={service._id}>
-            <td>{service.type}</td>
             <td align="center">
               {service.type === "Trash" ? (
                 <Trash />
@@ -26,7 +24,7 @@ const ScheduleTable = ({ services, renderWeekOfDay }) => {
                 <Leaf />
               ) : (
                 <Recycle />
-              )}
+              )}{service.type}
             </td>
             <td>{service.collectionDays}</td>
             <td>
@@ -38,7 +36,7 @@ const ScheduleTable = ({ services, renderWeekOfDay }) => {
             </td>
           </tr>
         ))}
-      </tbody>
+      </tbody> 
     </table>
   );
 };
