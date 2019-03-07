@@ -1,160 +1,157 @@
-import React, { Component } from "react";
+import React from "react";
+import Form2 from "./common/form2";
 import PostData from "../Data/street.json";
-import SearchBox from "./searchBox";
+import { Button } from 'reactstrap';
 import _ from "lodash";
-import ListGroup from "./listGroup";
-import Trash from "./common/trash";
-import Leaf from "./common/leaf";
-import Recycle from "./common/recycle";
+
+
 import { getTrashService } from "../services/trashService";
+import * as moment from "moment";
+import ScheduleTable from './common/scheduleTable';
+class TrashLookUp2 extends Form2 {
+ 
+  displayText() {
+    const selectedAddress = _.trim(this.state.value);
+    const linkMessage = "Not the right address?";
+      let message = [];
+      message.push(<h6>Your Schedule</h6>);
+      message.push("showing collection schedule for:");
+      message.push(<h6> {selectedAddress} </h6>);
+      message.push("Not the right address?Try another search");
+   
 
-class Movies extends Component {
-  state = {
-    services: getTrashService(),
-    searchQuery: "",
-    addresses: PostData,
-    issearch: 0,
-    selectedAddress: null
-    
-    
-  };
+      const displayMessage = message.map((data, index) => {
+        return <span key={index}>{data}</span>;
+      });
 
+    return(
+     
+<div>
+   {displayMessage} <Button color="link" onClick={this.handleClick}>Try another search</Button>
+   </div>               
+    );
+  }
 
+  getAddresses() {
+    let searchQuery =  _.trim(this.state.value);
+    let filtered =PostData;
+    const isHidden = this.state.isHidden;
+ 
+    if (searchQuery.length > 0) {
+   
+         if (isHidden) 
+         {
+          filtered = PostData.filter(m =>
+            m.address1.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1);
+          }
+          else{
+            filtered = PostData.filter(
+             m => m.address1.toLowerCase() === searchQuery.toLowerCase());
+      
+          }
+        }
+    return {  data: filtered };
+  }
 
-  // componentDidMount() {
-  // console.log("inside didmount");
-  //const fakeAddress = [{ _id: "", name: "" }, ...getFakeAddress()];
-  // this.setState({ searchQuery: this.ref.searchboxinput.value });
-  // }
-  // componentDidUpdate() {
-  //   console.log("inside componentDidUpdate" + this.state.searchQuery);
-  // }
-  handleAddressSelect = address => {
-    // console.log("address:" + address.address1);
-    this.setState({
-      selectedAddress: address.address1,
-      searchQuery: address.address1,
-      issearch: 3
-    });
-  };
-  handleSearch = query => {
-    console.log("handel Search:" + query);
-    if (query.length === 0) {
-      this.setState({ searchQuery: query, issearch: 0 });
-    } else {
-      this.setState({ searchQuery: query, issearch: 1 });
-    }
-  };
+   renderConditionTable() {
+     const dowloadMessage =
+       "Download your complete four year scheduled in PDF format";
 
-  handleSearchClick = query => {
-    if (this.state.searchQuery.length === 0) {
-      alert("search criteria misssing");
-    } else {
-      this.setState({ issearch: 2 });
-    }
-    console.log("button is click");
-  };
+    return (
+      <div className="row">
+        <div className="col-5">
+        <ScheduleTable services = {getTrashService()} renderWeekOfDay= {this.renderWeekOfDay} />
+          <h6>Download</h6>
+          {/* <a href="/test">{dowloadMessage}</a> */}
+        </div>
+      </div>
+    );
+ }
+  renderNotFoundMessage() {
+  
+    const searchValue = this.state.data["searchboxname"];
+    return (
+      <div>
+        <i>we could not find address {searchValue}</i>
+      </div>
+    );
+  }
 
-  getSearchResult = () => {
-    const searchQuery = this.state.searchQuery;
-    const issearch = this.state.issearch;
-    let filtered = ""; // PostData;
-    // console.log("value of searchQuery " + searchQuery);
-    //console.log("value of isearch is " + issearch);
-    if (issearch === 1) {
-      console.log("searchclicked - false ");
-      if (searchQuery)
-        filtered = PostData.filter(m =>
-          m.address1.toLowerCase().startsWith(searchQuery.toLowerCase())
-        );
-    } else {
-      if (issearch === 2) console.log("searchclicked - true ");
-      filtered = PostData.filter(m =>
-        m.address1.toLowerCase().startsWith(searchQuery.toLowerCase())
-      );
-    }
+  renderWeekOfDay = type =>  {
+    return  type === 1
+       ? (this.trashNextCollectionDate())
+       : type === 2
+       ? (this.recylceNextCollectionDate())
+       : (this.leafNextCollectionDate());
 
-    console.log(filtered.length);
-    console.log(filtered);
-    return { totalCount: filtered.length, data: filtered, issearch: issearch };
-  };
+ 
+  }
+  leafNextCollectionDate() {
+
+    const dayOfWeek = moment().day();
+    return dayOfWeek === 5
+      ? moment()
+          .add(14, "d")
+          .format("D/M/YYYY")
+      : moment()
+          .add(12 - dayOfWeek, "d")
+          .format("D/M/YYYY");
+  }
+
+  recylceNextCollectionDate() {
+    const dayOfWeek = moment().day();
+    return dayOfWeek >= 0 && dayOfWeek < 5
+      ? moment()
+          .add(5 - dayOfWeek, "d")
+          .format("D/M/YYYY")
+      : moment()
+          .add(6, "d")
+          .format("D/M/YYYY");
+  }
+
+  trashNextCollectionDate() {
+    const dayOfWeek = moment().day();
+
+    return dayOfWeek >= 1 && dayOfWeek < 6
+      ? moment()
+          .add(6 - dayOfWeek, "d")
+          .format("D/M/YYYY")
+      : dayOfWeek === 6
+      ? moment()
+          .add(2, "d")
+          .format("D/M/YYYY")
+      : moment()
+          .add(1, "d")
+          .format("D/M/YYYY");
+  }
 
   render() {
-    const { totalCount, data: data, issearch } = this.getSearchResult();
+    const {  data } = this.getAddresses();
+    const isHidden = this.state.isHidden;
+    const firstText = " First paragraph shown here ";
+    const secondText = "  second paragraph shown here ";
 
-    const searchQuery = this.state.addresses;
-    const searchValue = this.state.searchQuery;
     return (
       <React.Fragment>
-        <p>Showing {totalCount} address in the database.</p>
-        <SearchBox
-          value={searchValue}
-          onChange={this.handleSearch}
-          onClick={this.handleSearchClick}
-        />
+  
+        <h6>Find Your Collection Schedule.</h6>
+        <p>{firstText}</p>
+        <p>{secondText}</p>
         <div className="row">
-          {issearch === 1 && totalCount > 0 ? (
-            <div className="col-5">
-              <ListGroup
-                items={data}
-                selectedItem={this.state.selectedAddress}
-                onItemSelect={this.handleAddressSelect}
-              />
-            </div>
-          ) : (
-            ""
-          )}
-        </div>
-        {issearch === 3 ? (
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Image</th>
-                <th>Collection Days</th>
-                <th>Next Collection</th>
-
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.services.map(service => (
-                <tr key={service._id}>
-                  <td>{service.type}</td>
-                  <td>
-                    {service.type === "Trash" ? (
-                      <Trash />
-                    ) : service.type === "Leaf" ? (
-                      <Leaf />
-                    ) : (
-                      <Recycle />
-                    )}
-                  </td>
-                  <td>{service.collectionDays}</td>
-                  <td>{service.nextCollection}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : issearch === 2 && totalCount > 0 ? (
-          <div>
-            we could not find {searchValue}
-            <p>Did you mean?</p>
-            {data[0].address1}
+          <div className="col-5">
+          {!this.state.isAutoTextHidden &&  this.renderList(data)}    
           </div>
-        ) : (
-          ""
-        )}
-
-        {/* {data.length === 1 ? data[0].address1 : "none"}
-        <ul className="list-group-item">
-          {data.map((item, i) => (
-            <div key={i}> {item.address1}</div>
-          ))}
-        </ul> */}
+        </div>
+     
+         { !isHidden && this.displayText() } 
+      
+        { !isHidden && this.renderConditionTable()}
+        
+ 
       </React.Fragment>
     );
+
   }
 }
 
-export default Movies;
+export default TrashLookUp2;
