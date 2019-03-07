@@ -1,7 +1,7 @@
 import React from "react";
 import Icon from "./Icon";
 const ScheduleTable = ({ services, renderWeekOfDay }) => {
-
+  const scheduleType={ trash: 1 , recycle:2, leaf: 3};
 
   return (
     <table className="table table-bordered table-sm">
@@ -27,10 +27,10 @@ const ScheduleTable = ({ services, renderWeekOfDay }) => {
             <td>{service.collectionDays}</td>
             <td>
               {service.type === "Trash"
-                ? renderWeekOfDay(1)
+                ? renderWeekOfDay(scheduleType.trash)
                 : service.type === "Leaf"
-                ? renderWeekOfDay(3)
-                : renderWeekOfDay(2)}
+                ? renderWeekOfDay(scheduleType.leaf)
+                : renderWeekOfDay(scheduleType.recycle)}
             </td>
           </tr>
         ))}

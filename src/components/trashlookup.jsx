@@ -58,11 +58,11 @@ class TrashLookUp extends Form {
       </div>
     );
   }
-  //TODO change type to somthing
   renderWeekOfDay = type => {
-    return type === 1
+   const scheduleType={ trash: 1 , recycle:2, leaf: 3};
+    return type === scheduleType.trash
       ? (this.trashNextCollectionDate())
-      : type === 2
+      : type === scheduleType.recycle
         ? (this.recylceNextCollectionDate())
         : (this.leafNextCollectionDate());
 
