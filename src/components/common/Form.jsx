@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-//import Input from "./input";
-import _ from "lodash";
 import Autocomplete from "react-autocomplete";
 
 class Form extends Component {
