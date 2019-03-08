@@ -2,9 +2,7 @@ import React from "react";
 import Form from "./common/Form";
 import PostData from "../Data/street.json";
 import _ from "lodash";
-import InformationSection from "./InformationSection"
-
-
+import InformationSection from "./common/InformationSection"
 import { getTrashService } from "../services/trashService";
 import * as moment from "moment";
 import ScheduleTable from './common/scheduleTable';
@@ -23,7 +21,6 @@ class TrashLookUp extends Form {
     const isCollectionScheduleTextHidden = this.state.isCollectionScheduleTextHidden;
 
     if (searchQuery.length > 0) {
-      //TODO REFACTOR IT 
       if (isCollectionScheduleTextHidden) {
         filtered = PostData.filter(m =>
           m.address1.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1);
@@ -37,56 +34,51 @@ class TrashLookUp extends Form {
     return { data: filtered };
   }
   trashSchedule() {
-    const dowloadMessage =
-      "Download your complete four year scheduled in PDF format";
+    const scheduleType= this.state.scheduleType;
+    //TODO: we will use this later
+    // const dowloadMessage =
+    //   "Download your complete four year scheduled in PDF format";
     return (
       <div className="row">
         <div className="col-5">
-          <ScheduleTable services={getTrashService()} renderWeekOfDay={this.renderWeekOfDay} />
+          <ScheduleTable services={getTrashService()} scheduleType={scheduleType} renderWeekOfDay={this.renderWeekOfDay} />
           <h6>Download</h6>
           {/* <a href="/test">{dowloadMessage}</a> */}
         </div>
       </div>
     );
   }
-  renderNotFoundMessage() {
 
-    const searchValue = this.state.data["searchboxname"];
-    return (
-      <div>
-        <i>we could not find address {searchValue}</i>
-      </div>
-    );
-  }
   renderWeekOfDay = type => {
-   const scheduleType={ trash: 1 , recycle:2, leaf: 3};
-    return type === scheduleType.trash
+    const { scheduleType } = this.state;
+    const trash =  scheduleType.trash.toLowerCase();
+    const recycle =  scheduleType.recycle.toLowerCase()
+    return type === trash
       ? (this.trashNextCollectionDate())
-      : type === scheduleType.recycle
+      : type === recycle
         ? (this.recylceNextCollectionDate())
         : (this.leafNextCollectionDate());
 
 
   }
   leafNextCollectionDate() {
-    const dateFormat = 'D/M/YYYY';
-    const dayOfWeek = moment().day();
-
-    return dayOfWeek === 5
+    const { dateFormat, dayOfWeek } = this.state;
+    const today = moment().day();
+    return today === dayOfWeek.friday
       ? moment()
         .add(14, "d")
         .format(dateFormat)
       : moment()
-        .add(12 - dayOfWeek, "d")
+        .add(12 - today, "d")
         .format(dateFormat);
   }
 
   recylceNextCollectionDate() {
-    const dateFormat = 'D/M/YYYY';
-    const dayOfWeek = moment().day();
-    return dayOfWeek >= 0 && dayOfWeek < 5
+    const { dateFormat, dayOfWeek } = this.state;
+    const today = moment().day();
+    return today >= dayOfWeek.sunday && today < dayOfWeek.friday
       ? moment()
-        .add(5 - dayOfWeek, "d")
+        .add(5 - today, "d")
         .format(dateFormat)
       : moment()
         .add(6, "d")
@@ -94,14 +86,14 @@ class TrashLookUp extends Form {
   }
 
   trashNextCollectionDate() {
-    const dateFormat = 'D/M/YYYY';
-    const dayOfWeek = moment().day();
+    const { dateFormat, dayOfWeek } = this.state;
+    const today = moment().day();
 
-    return dayOfWeek >= 1 && dayOfWeek < 6
+    return today >= dayOfWeek.monday && today < dayOfWeek.saturday
       ? moment()
-        .add(6 - dayOfWeek, "d")
+        .add(6 - today, "d")
         .format(dateFormat)
-      : dayOfWeek === 6
+      : today === dayOfWeek.saturday
         ? moment()
           .add(2, "d")
           .format(dateFormat)
@@ -113,6 +105,7 @@ class TrashLookUp extends Form {
   render() {
     const { data } = this.addressData();
     const isCollectionScheduleTextHidden = this.state.isCollectionScheduleTextHidden;
+    const isAutoTextHidden = this.state.isAutoTextHidden;
     return (
       <React.Fragment>
 
@@ -121,7 +114,7 @@ class TrashLookUp extends Form {
         <p>Second paragraph shown here</p>
         <div className="row">
           <div className="col-5">
-            {!this.state.isAutoTextHidden && this.renderList(data)}
+            {!isAutoTextHidden && this.renderList(data)}
           </div>
         </div>
 

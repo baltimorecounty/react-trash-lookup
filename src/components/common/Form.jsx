@@ -7,8 +7,12 @@ class Form extends Component {
     this.state = {
       selectedAddress: '',
       isCollectionScheduleTextHidden: true,
-      isAutoTextHidden: false
+      isAutoTextHidden: false,
+      dateFormat : 'D/M/YYYY',
+      scheduleType : { trash:"trash", recycle:"recycle", leaf:"leaf" },
+      dayOfWeek :{sunday:0, monday:1, tuesday:2, wednesday:3, thrusday:4,friday:5, saturday:6}
     }
+    
     this.handleClick = this.handleClick.bind(this);
   }
   handleClick(event) {
@@ -16,6 +20,7 @@ class Form extends Component {
     this.setState({ isAutoTextHidden: false, isCollectionScheduleTextHidden: true, selectedAddress: '' });
   }
   renderList(dataList) {
+    const selectedAddress = this.state.selectedAddress;
     const items = dataList.map((item, index) => (
         {
             id: item._id,
@@ -35,7 +40,7 @@ class Form extends Component {
                 {item.label}
               </div>
             }
-            value={this.state.selectedAddress}
+            value={selectedAddress}
             onChange={e => this.setState({ selectedAddress: e.target.value, isCollectionScheduleTextHidden: true, isAutoTextHidden: false })}
             onSelect={value => this.setState({ selectedAddress:value, isCollectionScheduleTextHidden: false, isAutoTextHidden: true })}
           />
