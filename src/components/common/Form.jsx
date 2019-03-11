@@ -13,6 +13,7 @@ class Form extends Component {
       dayOfWeek :{sunday:0, monday:1, tuesday:2, wednesday:3, thrusday:4,friday:5, saturday:6}
     }
     
+    
     this.handleClick = this.handleClick.bind(this);
   }
   handleClick(event) {
