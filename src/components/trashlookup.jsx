@@ -19,9 +19,7 @@ class TrashLookUp extends Form {
 
     if (searchQuery.length > 0) {
       if (isCollectionScheduleTextHidden) {
-        filtered = PostData.filter(
-          m => m.address1.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1
-        );
+        filtered = PostData.filter(m => m.address1.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1);
       } else {
         filtered = PostData.filter(m => m.address1.toLowerCase() === searchQuery.toLowerCase());
       }

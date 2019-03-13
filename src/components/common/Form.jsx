@@ -9,7 +9,11 @@ class Form extends Component {
       isCollectionScheduleTextHidden: true,
       isAutoTextHidden: false,
       dateFormat: 'D/M/YYYY',
-      scheduleType: { trash: 'trash', recycle: 'recycle', leaf: 'leaf' },
+      scheduleType: {
+        trash: 'trash',
+        recycle: 'recycle',
+        leaf: 'leaf',
+      },
       dayOfWeek: {
         sunday: 0,
         monday: 1,
