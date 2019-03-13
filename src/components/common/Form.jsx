@@ -10,13 +10,25 @@ class Form extends Component {
       isAutoTextHidden: false,
       dateFormat: 'D/M/YYYY',
       scheduleType: { trash: 'trash', recycle: 'recycle', leaf: 'leaf' },
-      dayOfWeek: { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thrusday: 4, friday: 5, saturday: 6 },
+      dayOfWeek: {
+        sunday: 0,
+        monday: 1,
+        tuesday: 2,
+        wednesday: 3,
+        thrusday: 4,
+        friday: 5,
+        saturday: 6,
+      },
     };
 
     this.handleClick = this.handleClick.bind(this);
   }
   handleClick(event) {
-    this.setState({ isAutoTextHidden: false, isCollectionScheduleTextHidden: true, selectedAddress: '' });
+    this.setState({
+      isAutoTextHidden: false,
+      isCollectionScheduleTextHidden: true,
+      selectedAddress: '',
+    });
   }
   renderList(dataList) {
     const selectedAddress = this.state.selectedAddress;
@@ -44,7 +56,11 @@ class Form extends Component {
               })
             }
             onSelect={value =>
-              this.setState({ selectedAddress: value, isCollectionScheduleTextHidden: false, isAutoTextHidden: true })
+              this.setState({
+                selectedAddress: value,
+                isCollectionScheduleTextHidden: false,
+                isAutoTextHidden: true,
+              })
             }
           />
           <i className="fa fa-search" />

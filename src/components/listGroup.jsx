@@ -1,6 +1,14 @@
 import React from 'react';
 import _ from 'lodash';
-const ListGroup = ({ items, textProperty, valueProperty, selectedItem, onItemSelect, onMouseOver, onKeyDown }) => {
+const ListGroup = ({
+  items,
+  textProperty,
+  valueProperty,
+  selectedItem,
+  onItemSelect,
+  onMouseOver,
+  onKeyDown,
+}) => {
   // console.log("selectedItem:" + selectedItem);
 
   const listItems = items.map((item, index) => (
@@ -11,7 +19,9 @@ const ListGroup = ({ items, textProperty, valueProperty, selectedItem, onItemSel
       onMouseOver={() => onMouseOver(item)}
       onKeyDown={e => onKeyDown(e.keyCode)}
       className={
-        _.lowerCase(item.address1) === _.lowerCase(selectedItem) ? 'list-group-item active' : 'list-group-item'
+        _.lowerCase(item.address1) === _.lowerCase(selectedItem)
+          ? 'list-group-item active'
+          : 'list-group-item'
       }
     >
       {item[textProperty]}
