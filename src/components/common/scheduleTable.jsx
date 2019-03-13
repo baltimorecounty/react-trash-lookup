@@ -1,9 +1,9 @@
-import React from "react";
-import Icon from "./Icon";
-const ScheduleTable = ({ services,scheduleType, renderWeekOfDay }) => {
-   const trash = scheduleType.trash.toLowerCase();
-   const leaf =scheduleType.leaf.toLowerCase() ;
-   const recycle = scheduleType.recycle.toLowerCase();
+import React from 'react';
+import Icon from './Icon';
+const ScheduleTable = ({ services, scheduleType, renderWeekOfDay }) => {
+  const trash = scheduleType.trash.toLowerCase();
+  const leaf = scheduleType.leaf.toLowerCase();
+  const recycle = scheduleType.recycle.toLowerCase();
   return (
     <table className="table table-bordered table-sm">
       <thead>
@@ -13,9 +13,8 @@ const ScheduleTable = ({ services,scheduleType, renderWeekOfDay }) => {
           <th>Next Collection</th>
         </tr>
       </thead>
-       <tbody>
+      <tbody>
         {services.map(service => (
-          
           <tr key={service._id}>
             <td align="center">
               {service.type.toLowerCase() === trash ? (
@@ -24,7 +23,8 @@ const ScheduleTable = ({ services,scheduleType, renderWeekOfDay }) => {
                 <Icon iconClass="leaf" />
               ) : (
                 <Icon iconClass="recycle" />
-              )}{service.type}
+              )}
+              {service.type}
             </td>
             <td>{service.collectionDays}</td>
             <td>
@@ -36,7 +36,7 @@ const ScheduleTable = ({ services,scheduleType, renderWeekOfDay }) => {
             </td>
           </tr>
         ))}
-      </tbody> 
+      </tbody>
     </table>
   );
 };

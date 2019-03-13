@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 class Address extends Component {
   state = {
-    searchQuery: ""
+    searchQuery: '',
   };
   render() {
     return <h1>address Search </h1>;
