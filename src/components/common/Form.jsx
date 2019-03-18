@@ -25,9 +25,9 @@ class Form extends Component {
       },
     };
 
-    this.handleClick = this.handleClick.bind(this);
+    this.handleClick = this.handleTryAnotherSearchClick.bind(this);
   }
-  handleClick(event) {
+  handleTryAnotherSearchClick(event) {
     this.setState({
       isAutoTextHidden: false,
       isCollectionScheduleTextHidden: true,
