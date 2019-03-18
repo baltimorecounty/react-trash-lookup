@@ -53,19 +53,19 @@ class TrashLookUp extends Form {
     return type === trash
       ? this.trashNextCollectionDate()
       : type === recycle
-      ? this.recylceNextCollectionDate()
-      : this.leafNextCollectionDate();
+        ? this.recylceNextCollectionDate()
+        : this.leafNextCollectionDate();
   };
   leafNextCollectionDate() {
     const { dateFormat, dayOfWeek } = this.state;
     const today = moment().day();
     return today === dayOfWeek.friday
       ? moment()
-          .add(14, 'd')
-          .format(dateFormat)
+        .add(14, 'd')
+        .format(dateFormat)
       : moment()
-          .add(12 - today, 'd')
-          .format(dateFormat);
+        .add(12 - today, 'd')
+        .format(dateFormat);
   }
 
   recylceNextCollectionDate() {
@@ -73,11 +73,11 @@ class TrashLookUp extends Form {
     const today = moment().day();
     return today >= dayOfWeek.sunday && today < dayOfWeek.friday
       ? moment()
-          .add(5 - today, 'd')
-          .format(dateFormat)
+        .add(5 - today, 'd')
+        .format(dateFormat)
       : moment()
-          .add(6, 'd')
-          .format(dateFormat);
+        .add(6, 'd')
+        .format(dateFormat);
   }
 
   trashNextCollectionDate() {
@@ -86,13 +86,13 @@ class TrashLookUp extends Form {
 
     return today >= dayOfWeek.monday && today < dayOfWeek.saturday
       ? moment()
-          .add(6 - today, 'd')
-          .format(dateFormat)
+        .add(6 - today, 'd')
+        .format(dateFormat)
       : today === dayOfWeek.saturday
-      ? moment()
+        ? moment()
           .add(2, 'd')
           .format(dateFormat)
-      : moment()
+        : moment()
           .add(1, 'd')
           .format(dateFormat);
   }
@@ -104,8 +104,6 @@ class TrashLookUp extends Form {
     return (
       <React.Fragment>
         <h6>Find Your Collection Schedule.</h6>
-        <p>First paragraph shown here</p>
-        <p>Second paragraph shown here</p>
         <div className="row">
           <div className="col-5">{!isAutoTextHidden && this.renderList(data)}</div>
         </div>
