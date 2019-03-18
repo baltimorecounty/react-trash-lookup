@@ -31,12 +31,10 @@ class TrashLookUp extends Form {
 
 
   renderWeekOfDay = type => {
-    const { scheduleType } = this.state;
-    const trash = scheduleType.trash.toLowerCase();
-    const recycle = scheduleType.recycle.toLowerCase();
-    return type === trash
+
+    return type === "trash"
       ? this.trashNextCollectionDate()
-      : type === recycle
+      : type === "recycle"
         ? this.recylceNextCollectionDate()
         : this.leafNextCollectionDate();
   };
@@ -85,8 +83,6 @@ class TrashLookUp extends Form {
     const { data } = this.addressData();
     const isCollectionScheduleTextHidden = this.state.isCollectionScheduleTextHidden;
     const isAutoTextHidden = this.state.isAutoTextHidden;
-    // const selectedAddress = this.state.selectedAddress;
-    const scheduleType = this.state.scheduleType;
     const renderWeekOfDay = this.renderWeekOfDay
     return (
       <React.Fragment>
@@ -100,7 +96,6 @@ class TrashLookUp extends Form {
         {!isCollectionScheduleTextHidden && this.displayCollectionSechduleText()}
 
         {!isCollectionScheduleTextHidden && <TrashSchedule services={getTrashService()}
-          scheduleType={scheduleType}
           renderWeekOfDay={renderWeekOfDay} />}
 
       </React.Fragment>

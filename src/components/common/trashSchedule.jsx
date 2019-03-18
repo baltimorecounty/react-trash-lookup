@@ -1,13 +1,12 @@
 import React from 'react';
 import ScheduleTable from './scheduleTable';
-const TrashSchedule = ({ services, scheduleType, renderWeekOfDay }) => {
+const TrashSchedule = ({ services, renderWeekOfDay }) => {
 
     return (
         <div className="row">
             <div className="col-5">
                 <ScheduleTable
                     services={services}
-                    scheduleType={scheduleType}
                     renderWeekOfDay={renderWeekOfDay}
                 />
                 <h6>Download</h6>
