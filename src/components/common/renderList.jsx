@@ -2,7 +2,7 @@ import React from 'react';
 
 import Autocomplete from 'react-autocomplete';
 
-const RenderList = ({ dataList, selectedAddress }) => {
+const RenderList = ({ dataList, selectedAddress, me }) => {
     const items = dataList.map((item, index) => ({
         id: item._id,
         label: item.address1,
@@ -20,14 +20,14 @@ const RenderList = ({ dataList, selectedAddress }) => {
                     )}
                     value={selectedAddress}
                     onChange={e =>
-                        this.setState({
+                        me.setState({
                             selectedAddress: e.target.value,
                             isCollectionScheduleTextHidden: true,
                             isAutoTextHidden: false,
                         })
                     }
                     onSelect={value =>
-                        this.setState({
+                        me.setState({
                             selectedAddress: value,
                             isCollectionScheduleTextHidden: false,
                             isAutoTextHidden: true,

@@ -6,7 +6,7 @@ import InformationSection from './common/InformationSection';
 import { getTrashService } from '../services/trashService';
 import * as moment from 'moment';
 import TrashSchedule from './common/trashSchedule';
-import RenderList from './common/renderList';
+// import RenderList from './common/renderList';
 class TrashLookUp extends Form {
   displayCollectionSechduleText() {
     const selectedAddress = _.trim(this.state.selectedAddress);
@@ -85,15 +85,15 @@ class TrashLookUp extends Form {
     const { data } = this.addressData();
     const isCollectionScheduleTextHidden = this.state.isCollectionScheduleTextHidden;
     const isAutoTextHidden = this.state.isAutoTextHidden;
-    const selectedAddress = this.state.selectedAddress;
+    // const selectedAddress = this.state.selectedAddress;
     const scheduleType = this.state.scheduleType;
     const renderWeekOfDay = this.renderWeekOfDay
     return (
       <React.Fragment>
         <h6>Find Your Collection Schedule.</h6>
         <div className="row">
-          <div className="col-5">{!isAutoTextHidden && <RenderList dataList={data} selectedAddress={selectedAddress} />}</div>
-          {/* <div className="col-5">{!isAutoTextHidden && this.renderList(data)}</div> */}
+
+          <div className="col-5">{!isAutoTextHidden && this.renderList(data)}</div>
 
         </div>
 
