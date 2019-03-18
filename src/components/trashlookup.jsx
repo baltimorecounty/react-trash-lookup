@@ -5,7 +5,7 @@ import _ from 'lodash';
 import InformationSection from './common/InformationSection';
 import { getTrashService } from '../services/trashService';
 import * as moment from 'moment';
-import ScheduleTable from './common/scheduleTable';
+import TrashSchedule from './common/trashSchedule';
 class TrashLookUp extends Form {
   displayCollectionSechduleText() {
     const selectedAddress = _.trim(this.state.selectedAddress);
@@ -26,25 +26,8 @@ class TrashLookUp extends Form {
     }
     return { data: filtered };
   }
-  trashSchedule() {
-    const scheduleType = this.state.scheduleType;
-    //TODO: we will use this later
-    // const dowloadMessage =
-    //   "Download your complete four year scheduled in PDF format";
-    return (
-      <div className="row">
-        <div className="col-5">
-          <ScheduleTable
-            services={getTrashService()}
-            scheduleType={scheduleType}
-            renderWeekOfDay={this.renderWeekOfDay}
-          />
-          <h6>Download</h6>
-          {/* <a href="/test">{dowloadMessage}</a> */}
-        </div>
-      </div>
-    );
-  }
+
+
 
   renderWeekOfDay = type => {
     const { scheduleType } = this.state;
@@ -110,7 +93,10 @@ class TrashLookUp extends Form {
 
         {!isCollectionScheduleTextHidden && this.displayCollectionSechduleText()}
 
-        {!isCollectionScheduleTextHidden && this.trashSchedule()}
+        {!isCollectionScheduleTextHidden && <TrashSchedule services={getTrashService()}
+          scheduleType={this.state.scheduleType}
+          renderWeekOfDay={this.renderWeekOfDay} />}
+
       </React.Fragment>
     );
   }
