@@ -35,7 +35,7 @@ class Form extends Component {
     });
   }
   renderList(dataList) {
-    const selectedAddress = this.state.selectedAddress;
+    const { selectedAddress } = this.state;
     const items = dataList.map((item, index) => ({
       id: item._id,
       label: item.address1,
