@@ -10,7 +10,8 @@ const TrashSchedule = ({ services, renderDayofWeek }) => {
                     renderDayofWeek={renderDayofWeek}
                 />
                 <h6>Download</h6>
-                {/* <a href="/test">{dowloadMessage}</a> */}
+                {/*  TODO: This feature will be enable in future
+                <a href="/test">{dowloadMessage}</a> */}
             </div>
         </div>
     )
