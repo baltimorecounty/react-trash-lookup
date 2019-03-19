@@ -1,16 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 
 import Autocomplete from 'react-autocomplete';
 
-class RenderList extends Component {
-    settingState(selectedAddress, isAutoTextHidden) {
-        return this.setState({
-            selectedAddress,
-            isAutoTextHidden
-        });
-    };
-    render() {
-        const { dataList, selectedAddress } = this.props;
+        const RenderList = ({ dataList, selectedAddress,resetState }) =>{
         const items = dataList.map((item, index) => ({
             id: item._id,
             label: item.address1,
@@ -28,15 +20,12 @@ class RenderList extends Component {
                             </div>
                         )}
                         value={selectedAddress}
-                        onChange={e => this.settingState(e.target.value, false)}
-                        onSelect={value => this.settingState(value, true)}
+                        onChange={e => resetState(e.target.value, false)}
+                        onSelect={value => resetState(value, true)}
                     />
                     <i className="fa fa-search" />
                 </div>
             </div>
         );
     }
-}
-
-
 export default RenderList;

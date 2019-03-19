@@ -1,14 +1,49 @@
-import React from 'react';
-import Form from './common/Form';
+
+import React, { Component } from 'react';
 import PostData from '../Data/street.json';
 import _ from 'lodash';
 import InformationSection from './common/InformationSection';
 import { getTrashService } from '../services/trashService';
 import * as moment from 'moment';
 import TrashSchedule from './common/trashSchedule';
-//import RenderList from './common/renderList';
-class TrashLookUp extends Form {
-
+import RenderList from './common/renderList';
+class TrashLookUp extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedAddress: '',
+      isAutoTextHidden: false,
+      dateFormat: 'D/M/YYYY',
+      scheduleType: {
+        trash: 'trash',
+        recycle: 'recycle',
+        leaf: 'leaf',
+      },
+      dayOfWeek: {
+        sunday: 0,
+        monday: 1,
+        tuesday: 2,
+        wednesday: 3,
+        thrusday: 4,
+        friday: 5,
+        saturday: 6,
+      },
+    };
+    this.handleResetFormClick = this.handleResetFormClick.bind(this);
+    this.settingState = this.settingState.bind(this);
+  }
+  handleResetFormClick(event) {
+    this.setState({
+      isAutoTextHidden: false,
+      selectedAddress: '',
+    });
+  }
+  settingState = (selectedAddress, isAutoTextHidden) => {
+    this.setState({
+      selectedAddress,
+      isAutoTextHidden
+    });
+  };
 
   addressData(isAutoTextHidden) {
     let searchQuery = _.trim(this.state.selectedAddress);
@@ -25,7 +60,6 @@ class TrashLookUp extends Form {
     }
     return { data: filtered };
   }
-
 
 
   renderDayofWeek = type => {
@@ -88,7 +122,7 @@ class TrashLookUp extends Form {
       <React.Fragment>
         <h6>Find Your Collection Schedule.</h6>
         <div className="row">
-          <div className="col-5">{!isAutoTextHidden && this.renderList(data)}</div>
+          <div className="col-5">{!isAutoTextHidden && <RenderList dataList={data} selectedAddress={selectedAddress} resetState={this.settingState} />}</div>
         </div>
 
         {isAutoTextHidden && <InformationSection address={selectedAddress} resetForm={this.handleResetFormClick} />}
