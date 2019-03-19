@@ -1,6 +1,6 @@
 import React from 'react';
 import Icon from './Icon';
-const ScheduleTable = ({ services, renderWeekOfDay }) => {
+const ScheduleTable = ({ services, renderDayofWeek }) => {
 
   return (
     <table className="table table-bordered table-sm">
@@ -16,21 +16,21 @@ const ScheduleTable = ({ services, renderWeekOfDay }) => {
           <tr key={service._id}>
             <td align="center">
               {service.type.toLowerCase() === "trash" ? (
-                <Icon iconClass="trash" />
+                <Icon iconClass={service.type.toLowerCase()} />
               ) : service.type.toLowerCase() === "leaf" ? (
-                <Icon iconClass="leaf" />
+                <Icon iconClass={service.type.toLowerCase()} />
               ) : (
-                    <Icon iconClass="recycle" />
+                    <Icon iconClass={service.type.toLowerCase()} />
                   )}
               {service.type}
             </td>
             <td>{service.collectionDays}</td>
             <td>
               {service.type.toLowerCase() === "trash"
-                ? renderWeekOfDay("trash")
+                ? renderDayofWeek(service.type.toLowerCase())
                 : service.type.toLowerCase() === "leaf"
-                  ? renderWeekOfDay("leaf")
-                  : renderWeekOfDay("recycle")}
+                  ? renderDayofWeek(service.type.toLowerCase())
+                  : renderDayofWeek(service.type.toLowerCase())}
             </td>
           </tr>
         ))}

@@ -30,7 +30,7 @@ class TrashLookUp extends Form {
 
 
 
-  renderWeekOfDay = type => {
+  renderDayofWeek = type => {
 
     return type === "trash"
       ? this.trashNextCollectionDate()
@@ -83,7 +83,7 @@ class TrashLookUp extends Form {
     const { data } = this.addressData();
     const isCollectionScheduleTextHidden = this.state.isCollectionScheduleTextHidden;
     const isAutoTextHidden = this.state.isAutoTextHidden;
-    const renderWeekOfDay = this.renderWeekOfDay
+    const renderDayofWeek = this.renderDayofWeek
     return (
       <React.Fragment>
         <h6>Find Your Collection Schedule.</h6>
@@ -96,7 +96,7 @@ class TrashLookUp extends Form {
         {!isCollectionScheduleTextHidden && this.displayCollectionSechduleText()}
 
         {!isCollectionScheduleTextHidden && <TrashSchedule services={getTrashService()}
-          renderWeekOfDay={renderWeekOfDay} />}
+          renderDayofWeek={renderDayofWeek} />}
 
       </React.Fragment>
     );
