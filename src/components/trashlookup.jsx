@@ -91,7 +91,7 @@ class TrashLookUp extends Form {
           <div className="col-5">{!isAutoTextHidden && this.renderList(data)}</div>
         </div>
 
-        {isAutoTextHidden && <InformationSection address={selectedAddress} resetForm={this.handleClick} />}
+        {isAutoTextHidden && <InformationSection address={selectedAddress} resetForm={this.handleResetFormClick} />}
 
         {isAutoTextHidden && <TrashSchedule services={getTrashService()}
           renderDayofWeek={renderDayofWeek} />}

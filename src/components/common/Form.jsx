@@ -23,9 +23,9 @@ class Form extends Component {
         saturday: 6,
       },
     };
-    this.handleClick = this.resetFormClick.bind(this);
+    this.handleResetFormClick = this.handleResetFormClick.bind(this);
   }
-  resetFormClick(event) {
+  handleResetFormClick(event) {
     this.setState({
       isAutoTextHidden: false,
       selectedAddress: '',
