@@ -14,11 +14,6 @@ class TrashLookUp extends Component {
       selectedAddress: '',
       isAutoTextHidden: false,
       dateFormat: 'D/M/YYYY',
-      scheduleType: {
-        trash: 'trash',
-        recycle: 'recycle',
-        leaf: 'leaf',
-      },
       dayOfWeek: {
         sunday: 0,
         monday: 1,
@@ -51,12 +46,7 @@ class TrashLookUp extends Component {
 
 
     if (searchQuery.length > 0) {
-      if (isAutoTextHidden) {
-        filtered = PostData.filter(m => m.address1.toLowerCase() === searchQuery.toLowerCase());
-      } else {
-        filtered = PostData.filter(m => m.address1.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1);
-
-      }
+      filtered = PostData.filter(m => m.address1.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1);
     }
     return { data: filtered };
   }
@@ -112,12 +102,13 @@ class TrashLookUp extends Component {
   }
 
   render() {
-    const isAutoTextHidden = this.state.isAutoTextHidden;
+    let isAutoTextHidden = this.state.isAutoTextHidden;
     const selectedAddress = _.trim(this.state.selectedAddress);
     const { data } = this.addressData(isAutoTextHidden);
 
 
     const renderDayofWeek = this.renderDayofWeek
+
     return (
       <React.Fragment>
         <h6>Find Your Collection Schedule.</h6>

@@ -1,5 +1,4 @@
 import React from "react";
-
 import Autocomplete from 'react-autocomplete';
 
         const RenderList = ({ dataList, selectedAddress,resetState }) =>{
