@@ -6,20 +6,21 @@ import InformationSection from './common/InformationSection';
 import { getTrashService } from '../services/trashService';
 import * as moment from 'moment';
 import TrashSchedule from './common/trashSchedule';
-// import RenderList from './common/renderList';
+//import RenderList from './common/renderList';
 class TrashLookUp extends Form {
 
 
-  addressData() {
+  addressData(isAutoTextHidden) {
     let searchQuery = _.trim(this.state.selectedAddress);
     let filtered = PostData;
-    const isCollectionScheduleTextHidden = this.state.isCollectionScheduleTextHidden;
+
 
     if (searchQuery.length > 0) {
-      if (isCollectionScheduleTextHidden) {
-        filtered = PostData.filter(m => m.address1.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1);
-      } else {
+      if (isAutoTextHidden) {
         filtered = PostData.filter(m => m.address1.toLowerCase() === searchQuery.toLowerCase());
+      } else {
+        filtered = PostData.filter(m => m.address1.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1);
+
       }
     }
     return { data: filtered };
@@ -77,22 +78,22 @@ class TrashLookUp extends Form {
   }
 
   render() {
-    const { data } = this.addressData();
-    const isCollectionScheduleTextHidden = this.state.isCollectionScheduleTextHidden;
     const isAutoTextHidden = this.state.isAutoTextHidden;
+    const selectedAddress = _.trim(this.state.selectedAddress);
+    const { data } = this.addressData(isAutoTextHidden);
+
+
     const renderDayofWeek = this.renderDayofWeek
     return (
       <React.Fragment>
         <h6>Find Your Collection Schedule.</h6>
         <div className="row">
-
           <div className="col-5">{!isAutoTextHidden && this.renderList(data)}</div>
-
         </div>
 
-        {!isCollectionScheduleTextHidden && <InformationSection address={_.trim(this.state.selectedAddress)} resetForm={this.handleClick} />}
+        {isAutoTextHidden && <InformationSection address={selectedAddress} resetForm={this.handleClick} />}
 
-        {!isCollectionScheduleTextHidden && <TrashSchedule services={getTrashService()}
+        {isAutoTextHidden && <TrashSchedule services={getTrashService()}
           renderDayofWeek={renderDayofWeek} />}
 
       </React.Fragment>

@@ -6,7 +6,6 @@ class Form extends Component {
     super(props);
     this.state = {
       selectedAddress: '',
-      isCollectionScheduleTextHidden: true,
       isAutoTextHidden: false,
       dateFormat: 'D/M/YYYY',
       scheduleType: {
@@ -29,14 +28,12 @@ class Form extends Component {
   resetFormClick(event) {
     this.setState({
       isAutoTextHidden: false,
-      isCollectionScheduleTextHidden: true,
       selectedAddress: '',
     });
   }
-  settingState(selectedAddress, isCollectionScheduleTextHidden, isAutoTextHidden) {
+  settingState(selectedAddress, isAutoTextHidden) {
     this.setState({
       selectedAddress,
-      isCollectionScheduleTextHidden,
       isAutoTextHidden
     });
   };
@@ -58,8 +55,8 @@ class Form extends Component {
               </div>
             )}
             value={selectedAddress}
-            onChange={e => this.settingState(e.target.value, true, false)}
-            onSelect={value => this.settingState(value, false, true)}
+            onChange={e => this.settingState(e.target.value, false)}
+            onSelect={value => this.settingState(value, true)}
           />
           <i className="fa fa-search" />
         </div>
