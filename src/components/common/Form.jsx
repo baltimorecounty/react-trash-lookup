@@ -24,16 +24,23 @@ class Form extends Component {
         saturday: 6,
       },
     };
-
-    this.handleClick = this.handleTryAnotherSearchClick.bind(this);
+    this.handleClick = this.resetFormClick.bind(this);
   }
-  handleTryAnotherSearchClick(event) {
+  resetFormClick(event) {
     this.setState({
       isAutoTextHidden: false,
       isCollectionScheduleTextHidden: true,
       selectedAddress: '',
     });
   }
+  settingState(value, isAutoTextHidden) {
+    return this.setState({
+      selectedAddress: value,
+      isCollectionScheduleTextHidden: false,
+      isAutoTextHidden: isAutoTextHidden
+    });
+  };
+
   renderList(dataList) {
     const { selectedAddress } = this.state;
     const items = dataList.map((item, index) => ({
@@ -52,20 +59,8 @@ class Form extends Component {
               </div>
             )}
             value={selectedAddress}
-            onChange={e =>
-              this.setState({
-                selectedAddress: e.target.value,
-                isCollectionScheduleTextHidden: true,
-                isAutoTextHidden: false,
-              })
-            }
-            onSelect={value =>
-              this.setState({
-                selectedAddress: value,
-                isCollectionScheduleTextHidden: false,
-                isAutoTextHidden: true,
-              })
-            }
+            onChange={e => this.settingState(e.target.value, false)}
+            onSelect={value => this.settingState(value, true)}
           />
           <i className="fa fa-search" />
         </div>
