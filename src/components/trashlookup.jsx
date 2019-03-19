@@ -8,10 +8,10 @@ import * as moment from 'moment';
 import TrashSchedule from './common/trashSchedule';
 // import RenderList from './common/renderList';
 class TrashLookUp extends Form {
-  displayCollectionSechduleText() {
-    const selectedAddress = _.trim(this.state.selectedAddress);
-    return <InformationSection address={selectedAddress} resetForm={this.handleClick} />;
-  }
+  // displayCollectionSechduleText() {
+  //   const selectedAddress = _.trim(this.state.selectedAddress);
+  //   return <InformationSection address={_.trim(this.state.selectedAddress)} resetForm={this.handleClick} />;
+  // }
 
   addressData() {
     let searchQuery = _.trim(this.state.selectedAddress);
@@ -93,7 +93,7 @@ class TrashLookUp extends Form {
 
         </div>
 
-        {!isCollectionScheduleTextHidden && this.displayCollectionSechduleText()}
+        {!isCollectionScheduleTextHidden && <InformationSection address={_.trim(this.state.selectedAddress)} resetForm={this.handleClick} />}
 
         {!isCollectionScheduleTextHidden && <TrashSchedule services={getTrashService()}
           renderDayofWeek={renderDayofWeek} />}

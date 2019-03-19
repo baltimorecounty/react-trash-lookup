@@ -33,14 +33,13 @@ class Form extends Component {
       selectedAddress: '',
     });
   }
-  settingState(value, isAutoTextHidden) {
-    return this.setState({
-      selectedAddress: value,
-      isCollectionScheduleTextHidden: false,
-      isAutoTextHidden: isAutoTextHidden
+  settingState(selectedAddress, isCollectionScheduleTextHidden, isAutoTextHidden) {
+    this.setState({
+      selectedAddress,
+      isCollectionScheduleTextHidden,
+      isAutoTextHidden
     });
   };
-
   renderList(dataList) {
     const { selectedAddress } = this.state;
     const items = dataList.map((item, index) => ({
@@ -59,8 +58,8 @@ class Form extends Component {
               </div>
             )}
             value={selectedAddress}
-            onChange={e => this.settingState(e.target.value, false)}
-            onSelect={value => this.settingState(value, true)}
+            onChange={e => this.settingState(e.target.value, true, false)}
+            onSelect={value => this.settingState(value, false, true)}
           />
           <i className="fa fa-search" />
         </div>
