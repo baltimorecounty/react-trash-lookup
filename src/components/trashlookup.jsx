@@ -1,156 +1,129 @@
-import React, { Component } from "react";
-import PostData from "../Data/street.json";
-import SearchBox from "./searchBox";
-import _ from "lodash";
-import ListGroup from "./listGroup";
-import Trash from "./common/trash";
-import Leaf from "./common/leaf";
-import Recycle from "./common/recycle";
-import { getTrashService } from "../services/trashService";
 
-class Movies extends Component {
-  state = {
-    services: getTrashService(),
-    searchQuery: "",
-    addresses: PostData,
-    issearch: 0,
-    selectedAddress: null
-  };
-
-  // componentDidMount() {
-  // console.log("inside didmount");
-  //const fakeAddress = [{ _id: "", name: "" }, ...getFakeAddress()];
-  // this.setState({ searchQuery: this.ref.searchboxinput.value });
-  // }
-  // componentDidUpdate() {
-  //   console.log("inside componentDidUpdate" + this.state.searchQuery);
-  // }
-  handleAddressSelect = address => {
-    // console.log("address:" + address.address1);
+import React, { Component } from 'react';
+import PostData from '../Data/street.json';
+import _ from 'lodash';
+import InformationSection from './common/InformationSection';
+import { getTrashService } from '../services/trashService';
+import * as moment from 'moment';
+import TrashSchedule from './common/trashSchedule';
+import RenderList from './common/renderList';
+class TrashLookUp extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedAddress: '',
+      isAutoTextHidden: false,
+      dateFormat: 'D/M/YYYY',
+      dayOfWeek: {
+        sunday: 0,
+        monday: 1,
+        tuesday: 2,
+        wednesday: 3,
+        thrusday: 4,
+        friday: 5,
+        saturday: 6,
+      },
+    };
+    this.handleResetFormClick = this.handleResetFormClick.bind(this);
+    this.settingState = this.settingState.bind(this);
+  }
+  handleResetFormClick(event) {
     this.setState({
-      selectedAddress: address.address1,
-      searchQuery: address.address1,
-      issearch: 3
+      isAutoTextHidden: false,
+      selectedAddress: '',
+    });
+  }
+  settingState = (selectedAddress, isAutoTextHidden) => {
+    this.setState({
+      selectedAddress,
+      isAutoTextHidden
     });
   };
-  handleSearch = query => {
-    console.log("handel Search:" + query);
-    if (query.length === 0) {
-      this.setState({ searchQuery: query, issearch: 0 });
-    } else {
-      this.setState({ searchQuery: query, issearch: 1 });
-    }
-  };
 
-  handleSearchClick = query => {
-    if (this.state.searchQuery.length === 0) {
-      alert("search criteria misssing");
-    } else {
-      this.setState({ issearch: 2 });
-    }
-    console.log("button is click");
-  };
+  addressData(isAutoTextHidden) {
+    let searchQuery = _.trim(this.state.selectedAddress);
+    let filtered = PostData;
 
-  getSearchResult = () => {
-    const searchQuery = this.state.searchQuery;
-    const issearch = this.state.issearch;
-    let filtered = ""; // PostData;
-    // console.log("value of searchQuery " + searchQuery);
-    //console.log("value of isearch is " + issearch);
-    if (issearch === 1) {
-      console.log("searchclicked - false ");
-      if (searchQuery)
-        filtered = PostData.filter(m =>
-          m.address1.toLowerCase().startsWith(searchQuery.toLowerCase())
-        );
-    } else {
-      if (issearch === 2) console.log("searchclicked - true ");
-      filtered = PostData.filter(m =>
-        m.address1.toLowerCase().startsWith(searchQuery.toLowerCase())
-      );
-    }
 
-    console.log(filtered.length);
-    console.log(filtered);
-    return { totalCount: filtered.length, data: filtered, issearch: issearch };
+    if (searchQuery.length > 0) {
+      filtered = PostData.filter(m => m.address1.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1);
+    }
+    return { data: filtered };
+  }
+
+
+  renderDayofWeek = type => {
+
+    return type === "trash"
+      ? this.trashNextCollectionDate()
+      : type === "recycle"
+        ? this.recylceNextCollectionDate()
+        : this.leafNextCollectionDate();
   };
+  leafNextCollectionDate() {
+    const { dateFormat, dayOfWeek } = this.state;
+    const today = moment().day();
+    return today === dayOfWeek.friday
+      ? moment()
+        .add(14, 'd')
+        .format(dateFormat)
+      : moment()
+        .add(12 - today, 'd')
+        .format(dateFormat);
+  }
+
+  recylceNextCollectionDate() {
+    const { dateFormat, dayOfWeek } = this.state;
+    const today = moment().day();
+    return today >= dayOfWeek.sunday && today < dayOfWeek.friday
+      ? moment()
+        .add(5 - today, 'd')
+        .format(dateFormat)
+      : moment()
+        .add(6, 'd')
+        .format(dateFormat);
+  }
+
+  trashNextCollectionDate() {
+    const { dateFormat, dayOfWeek } = this.state;
+    const today = moment().day();
+
+    return today >= dayOfWeek.monday && today < dayOfWeek.saturday
+      ? moment()
+        .add(6 - today, 'd')
+        .format(dateFormat)
+      : today === dayOfWeek.saturday
+        ? moment()
+          .add(2, 'd')
+          .format(dateFormat)
+        : moment()
+          .add(1, 'd')
+          .format(dateFormat);
+  }
 
   render() {
-    const { totalCount, data: data, issearch } = this.getSearchResult();
+    let isAutoTextHidden = this.state.isAutoTextHidden;
+    const selectedAddress = _.trim(this.state.selectedAddress);
+    const { data } = this.addressData(isAutoTextHidden);
 
-    const searchQuery = this.state.addresses;
-    const searchValue = this.state.searchQuery;
+
+    const renderDayofWeek = this.renderDayofWeek
+
     return (
       <React.Fragment>
-        <p>Showing {totalCount} address in the database.</p>
-        <SearchBox
-          value={searchValue}
-          onChange={this.handleSearch}
-          onClick={this.handleSearchClick}
-        />
+        <h6>Find Your Collection Schedule.</h6>
         <div className="row">
-          {issearch === 1 && totalCount > 0 ? (
-            <div className="col-5">
-              <ListGroup
-                items={data}
-                selectedItem={this.state.selectedAddress}
-                onItemSelect={this.handleAddressSelect}
-              />
-            </div>
-          ) : (
-            ""
-          )}
+          <div className="col-5">{!isAutoTextHidden && <RenderList dataList={data} selectedAddress={selectedAddress} resetState={this.settingState} />}</div>
         </div>
-        {issearch === 3 ? (
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Image</th>
-                <th>Collection Days</th>
-                <th>Next Collection</th>
 
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.services.map(service => (
-                <tr key={service._id}>
-                  <td>{service.type}</td>
-                  <td>
-                    {service.type === "Trash" ? (
-                      <Trash />
-                    ) : service.type === "Leaf" ? (
-                      <Leaf />
-                    ) : (
-                      <Recycle />
-                    )}
-                  </td>
-                  <td>{service.collectionDays}</td>
-                  <td>{service.nextCollection}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : issearch === 2 && totalCount > 0 ? (
-          <div>
-            we could not find {searchValue}
-            <p>Did you mean?</p>
-            {data[0].address1}
-          </div>
-        ) : (
-          ""
-        )}
+        {isAutoTextHidden && <InformationSection address={selectedAddress} resetForm={this.handleResetFormClick} />}
 
-        {/* {data.length === 1 ? data[0].address1 : "none"}
-        <ul className="list-group-item">
-          {data.map((item, i) => (
-            <div key={i}> {item.address1}</div>
-          ))}
-        </ul> */}
+        {isAutoTextHidden && <TrashSchedule services={getTrashService()}
+          renderDayofWeek={renderDayofWeek} />}
+
       </React.Fragment>
     );
   }
 }
 
-export default Movies;
+export default TrashLookUp;
