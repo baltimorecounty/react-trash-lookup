@@ -7,6 +7,7 @@ import { getTrashService } from '../services/trashService';
 import * as moment from 'moment';
 import TrashSchedule from './common/trashSchedule';
 import RenderList from './common/renderList';
+import { parseAddress } from './Services/AddressService'
 class TrashLookUp extends Component {
   constructor(props) {
     super(props);
@@ -47,7 +48,6 @@ class TrashLookUp extends Component {
 
     if (searchQuery.length > 0) {
       filtered = PostData.filter(m => m.address1.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1);
-      console.log(filtered);
     }
     return { data: filtered };
   }
@@ -105,7 +105,7 @@ class TrashLookUp extends Component {
     let isAutoTextHidden = this.state.isAutoTextHidden;
     const selectedAddress = _.trim(this.state.selectedAddress);
     const { data } = this.addressData(isAutoTextHidden);
-    const fullAddress = data.length > 0 ?`${data[0].address1}${`, `} ${data[0].city}${`, `} ${data[0].state}${` `} ${data[0].postalCode}`:'none';
+    const fullAddress = parseAddress(data);
     const renderDayofWeek = this.renderDayofWeek
 
     return (
