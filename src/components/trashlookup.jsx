@@ -7,7 +7,7 @@ import { getTrashService } from '../services/trashService';
 import * as moment from 'moment';
 import TrashSchedule from './common/trashSchedule';
 import RenderList from './common/renderList';
-import { parseAddress } from './Services/AddressService'
+import { getFullAddress } from './Services/AddressService'
 class TrashLookUp extends Component {
   constructor(props) {
     super(props);
@@ -105,7 +105,7 @@ class TrashLookUp extends Component {
     let isAutoTextHidden = this.state.isAutoTextHidden;
     const selectedAddress = _.trim(this.state.selectedAddress);
     const { data } = this.addressData(isAutoTextHidden);
-    const fullAddress = parseAddress(data);
+    const fullAddress = getFullAddress(data);
     const renderDayofWeek = this.renderDayofWeek
 
     return (
