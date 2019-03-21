@@ -12,7 +12,8 @@ describe('parseAddress', () => {
         expect(actual).toEqual(
             '1745 T Street Southeast1, Louisville, KY  40219'
         );
-    });
+	});
+
     it('should return a friendly message when the address is matched', () => {
         //arrange
         const emptyAddress = [
