@@ -10,7 +10,7 @@ describe('parseAddress', () => {
 
         //assert
         expect(actual).toEqual(
-            '1745 T Street Southeast1,  Louisville,  KY  40219'
+            '1745 T Street Southeast1, Louisville, KY  40219'
         );
     });
     it('should return a friendly message when the address is matched', () => {
@@ -30,7 +30,7 @@ describe('parseAddress', () => {
 
         //assert
         expect(actual).toEqual(
-            '1745 T Street Southeast1, Apt 15,  Louisville,  KY  40219'
+            '1745 T Street Southeast1, Apt 15, Louisville, KY 40219'
         );
     });
 
