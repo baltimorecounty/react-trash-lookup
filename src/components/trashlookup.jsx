@@ -47,6 +47,7 @@ class TrashLookUp extends Component {
 
     if (searchQuery.length > 0) {
       filtered = PostData.filter(m => m.address1.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1);
+      console.log(filtered);
     }
     return { data: filtered };
   }
@@ -100,13 +101,11 @@ class TrashLookUp extends Component {
           .add(1, 'd')
           .format(dateFormat);
   }
-
   render() {
     let isAutoTextHidden = this.state.isAutoTextHidden;
     const selectedAddress = _.trim(this.state.selectedAddress);
     const { data } = this.addressData(isAutoTextHidden);
-
-
+    const fullAddress = data.length > 0 ?`${data[0].address1}${`, `} ${data[0].city}${`, `} ${data[0].state}${` `} ${data[0].postalCode}`:'none';
     const renderDayofWeek = this.renderDayofWeek
 
     return (
@@ -116,7 +115,7 @@ class TrashLookUp extends Component {
           <div className="col-5">{!isAutoTextHidden && <RenderList dataList={data} selectedAddress={selectedAddress} resetState={this.settingState} />}</div>
         </div>
 
-        {isAutoTextHidden && <InformationSection address={selectedAddress} resetForm={this.handleResetFormClick} />}
+        {isAutoTextHidden && <InformationSection address={fullAddress} resetForm={this.handleResetFormClick} />}
 
         {isAutoTextHidden && <TrashSchedule services={getTrashService()}
           renderDayofWeek={renderDayofWeek} />}
