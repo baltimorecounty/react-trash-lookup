@@ -15,11 +15,11 @@ describe('getFullAddress', () => {
     it('should return the full address when all address properties are provided', () => {
         //arrange
         const actualAddress = {
-            address1: '1745 T Street Southeast1',
-            address2: 'Apt 15',
-            city: 'Louisville',
-            state: 'KY',
-            postalCode: '40219'
+            address1:'1745 T Street Southeast1',
+            address2:'Apt 15',
+            city:'Louisville',
+            state:'KY',
+            postalCode:'40219'
         };
 
         //act
@@ -27,7 +27,7 @@ describe('getFullAddress', () => {
 
         //assert
         expect(actual).toEqual(
-            '1745 T Street Southeast1, Apt 15,  Louisville,  KY  40219'
+            '1745 T Street Southeast1, Apt 15, Louisville, KY 40219'
         );
     });
 
@@ -46,7 +46,7 @@ describe('getFullAddress', () => {
 
         //assert
         expect(actual).toEqual(
-            '1745 T Street Southeast1,  Louisville,  KY  40219'
+            '1745 T Street Southeast1, Louisville, KY 40219'
         );
     });
 });
