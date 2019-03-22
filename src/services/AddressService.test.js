@@ -1,6 +1,6 @@
 import { getFullAddress } from './AddressService';
 
-describe('parseAddress', () => {
+describe('getFullAddress', () => {
     it('should return a friendly message when the address is empty', () => {
         //arrange
         const emptyAddress = {};
@@ -46,7 +46,7 @@ describe('parseAddress', () => {
 
         //assert
         expect(actual).toEqual(
-            'should return the full address when all address properties are provied except address2'
+            '1745 T Street Southeast1,  Louisville,  KY  40219'
         );
     });
 });
