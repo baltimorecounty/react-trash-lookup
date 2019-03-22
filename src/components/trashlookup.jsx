@@ -106,8 +106,6 @@ class TrashLookUp extends Component {
     const selectedAddress = _.trim(this.state.selectedAddress);
     const { data } = this.addressData(isAutoTextHidden);
     const Address = data.length > 0 ? _.assign({ 'address1': data[0].address1, 'address2': data[0].address2, 'city': data[0].city, 'state': data[0].state, 'postalCode': data[0].postalCode }) : {};
-    // const Address = data.length > 0 ? ({ 'address1': data[0].address1, 'address2': data[0].address2, 'city': data[0].city, 'state': data[0].state, 'postalCode': data[0].postalCode }) : {};
-
     const fullAddress = getFullAddress(Address);
     const renderDayofWeek = this.renderDayofWeek
 
