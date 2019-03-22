@@ -105,7 +105,9 @@ class TrashLookUp extends Component {
     let isAutoTextHidden = this.state.isAutoTextHidden;
     const selectedAddress = _.trim(this.state.selectedAddress);
     const { data } = this.addressData(isAutoTextHidden);
-    const fullAddress = getFullAddress(data);
+    const Address = data.length > 0 ? _.assign({ 'address1': data[0].address1, 'address2': data[0].address2, 'city': data[0].city, 'state': data[0].state, 'postalCode': data[0].postalCode }) : null;
+
+    const fullAddress = getFullAddress(Address);
     const renderDayofWeek = this.renderDayofWeek
 
     return (
