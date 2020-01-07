@@ -3,7 +3,7 @@ import React from "react";
 
 const ScheduleTable = ({ services, renderDayOfWeek }) => {
   return (
-    <table className="table table-bordered table-sm">
+    <table id="trash-schedule" className="table table-bordered table-sm">
       <thead>
         <tr>
           <th>Type</th>
@@ -12,14 +12,16 @@ const ScheduleTable = ({ services, renderDayOfWeek }) => {
         </tr>
       </thead>
       <tbody>
-        {services.map(service => (
-          <tr key={service._id}>
+        {services.map(({ _id, icon, type = "", collectionDays }) => (
+          <tr key={_id}>
             <td align="center">
-              <Icon iconClass={service.type.toLowerCase()} />
-              {service.type}
+              {icon && (
+                <Icon aria-hidden="true" iconClass={icon.toLowerCase()} />
+              )}
+              {type}
             </td>
-            <td>{service.collectionDays}</td>
-            <td>{renderDayOfWeek(service.type.toLowerCase())}</td>
+            <td>{collectionDays}</td>
+            <td>{renderDayOfWeek(type.toLowerCase())}</td>
           </tr>
         ))}
       </tbody>
