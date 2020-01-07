@@ -1,6 +1,10 @@
 import * as moment from "moment";
 
 import React, { Component, useState } from "react";
+import {
+  DefaultDateFormat as dateFormat,
+  DayOfWeekDictionary as dayOfWeek
+} from "../common/Dates";
 
 import InformationSection from "./common/InformationSection";
 import PostData from "../Data/street.json";
@@ -9,17 +13,6 @@ import TrashSchedule from "./common/trashSchedule";
 import _ from "lodash";
 import { getFullAddress } from "../services/AddressService";
 import { getTrashService } from "../services/trashService";
-
-const dateFormat = "D/M/YYYY";
-const dayOfWeek = {
-  sunday: 0,
-  monday: 1,
-  tuesday: 2,
-  wednesday: 3,
-  thrusday: 4,
-  friday: 5,
-  saturday: 6
-};
 
 const TrashLookUp = props => {
   const [selectedAddress, setSelectedAddress] = useState("");
