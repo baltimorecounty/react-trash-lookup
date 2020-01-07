@@ -15,7 +15,9 @@ const ScheduleTable = ({ services, renderDayOfWeek }) => {
         {services.map(({ _id, icon, type = "", collectionDays }) => (
           <tr key={_id}>
             <td align="center">
-              {icon && <Icon iconClass={icon.toLowerCase()} />}
+              {icon && (
+                <Icon aria-hidden="true" iconClass={icon.toLowerCase()} />
+              )}
               {type}
             </td>
             <td>{collectionDays}</td>
