@@ -1,7 +1,7 @@
 import Autocomplete from "react-autocomplete";
 import React from "react";
 
-const RenderList = ({ dataList, selectedAddress, onSelect }) => {
+const RenderList = ({ dataList, selectedAddress, onSelect, name }) => {
   const items = dataList.map((item, index) => ({
     id: item._id,
     label: item.address1
@@ -20,6 +20,9 @@ const RenderList = ({ dataList, selectedAddress, onSelect }) => {
             >
               {item.label}
             </div>
+          )}
+          renderInput={({ name: nameFromProps, ...rest }) => (
+            <input id={name} name={name} {...rest} />
           )}
           value={selectedAddress}
           onChange={e => onSelect(e.target.value, false)}

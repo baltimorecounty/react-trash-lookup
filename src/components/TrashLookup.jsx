@@ -101,11 +101,12 @@ const TrashLookUp = props => {
 
   return (
     <React.Fragment>
-      <h6>Find Your Collection Schedule.</h6>
+      <label htmlFor="address-lookup">Find Your Collection Schedule</label>
       <div className="row">
         <div className="col-5">
           {!isAutoTextHidden && (
             <RenderList
+              name="address-lookup"
               dataList={data}
               selectedAddress={selectedAddress}
               onSelect={handleAddressSelect}
