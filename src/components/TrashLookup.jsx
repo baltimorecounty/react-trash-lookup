@@ -1,3 +1,7 @@
+import {
+  GetAddressFirstOrDefault,
+  GetFormattedAddress
+} from "../services/AddressService";
 import React, { useState } from "react";
 import {
   DefaultDateFormat as dateFormat,
@@ -9,23 +13,12 @@ import PostData from "../Data/street.json";
 import RenderList from "./common/renderList";
 import TrashSchedule from "./common/trashSchedule";
 import _ from "lodash";
-import { getFullAddress } from "../services/AddressService";
 import { getTrashService } from "../services/trashService";
 import moment from "moment";
 
 const TrashLookUp = props => {
   const [selectedAddress, setSelectedAddress] = useState("");
   const [isAutoTextHidden, setIsAutoTextHidden] = useState(false);
-
-  const getAddress = (query = "") => {
-    let searchQuery = _.trim(query).toLowerCase();
-
-    return searchQuery
-      ? PostData.find(
-          m => m.address1.toLowerCase().indexOf(searchQuery) > -1
-        ) || {}
-      : {};
-  };
 
   const resetForm = () => {
     setIsAutoTextHidden(false);
@@ -78,9 +71,13 @@ const TrashLookUp = props => {
           .format(dateFormat);
   };
 
-  const { address1, address2, city, state, postalCode } = getAddress(
-    selectedAddress
-  );
+  const {
+    address1,
+    address2,
+    city,
+    state,
+    postalCode
+  } = GetAddressFirstOrDefault(selectedAddress);
   const Address =
     address1 && postalCode
       ? _.assign({
@@ -91,7 +88,7 @@ const TrashLookUp = props => {
           postalCode
         })
       : {};
-  const fullAddress = getFullAddress(Address);
+  const fullAddress = GetFormattedAddress(Address);
 
   const handleAddressSelect = (selectedAddress, isAutoTextHidden) => {
     setSelectedAddress(selectedAddress);
