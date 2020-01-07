@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 
 const ResetForm = ({ resetForm }) => (
@@ -8,5 +9,10 @@ const ResetForm = ({ resetForm }) => (
     </button>
   </p>
 );
+
+ResetForm.propTypes = {
+  /** The function that will allow you to reset the form */
+  resetForm: PropTypes.func.isRequired
+};
 
 export default ResetForm;
