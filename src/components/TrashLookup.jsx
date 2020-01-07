@@ -1,155 +1,138 @@
-import React, { Component } from 'react';
-import PostData from '../Data/street.json';
-import _ from 'lodash';
-import InformationSection from './common/InformationSection';
-import { getTrashService } from '../services/trashService';
-import * as moment from 'moment';
-import TrashSchedule from './common/trashSchedule';
-import RenderList from './common/renderList';
-import { getFullAddress } from '../services/AddressService';
-class TrashLookUp extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            selectedAddress: '',
-            isAutoTextHidden: false,
-            dateFormat: 'D/M/YYYY',
-            dayOfWeek: {
-                sunday: 0,
-                monday: 1,
-                tuesday: 2,
-                wednesday: 3,
-                thrusday: 4,
-                friday: 5,
-                saturday: 6
-            }
-        };
-        this.handleResetFormClick = this.handleResetFormClick.bind(this);
-        this.settingState = this.settingState.bind(this);
+import * as moment from "moment";
+
+import React, { Component, useState } from "react";
+
+import InformationSection from "./common/InformationSection";
+import PostData from "../Data/street.json";
+import RenderList from "./common/renderList";
+import TrashSchedule from "./common/trashSchedule";
+import _ from "lodash";
+import { getFullAddress } from "../services/AddressService";
+import { getTrashService } from "../services/trashService";
+
+const dateFormat = "D/M/YYYY";
+const dayOfWeek = {
+  sunday: 0,
+  monday: 1,
+  tuesday: 2,
+  wednesday: 3,
+  thrusday: 4,
+  friday: 5,
+  saturday: 6
+};
+
+const TrashLookUp = props => {
+  const [selectedAddress, setSelectedAddress] = useState("");
+  const [isAutoTextHidden, setIsAutoTextHidden] = useState(false);
+
+  const addressData = () => {
+    let searchQuery = _.trim(selectedAddress);
+    let filtered = PostData;
+
+    if (searchQuery.length > 0) {
+      filtered = PostData.filter(
+        m => m.address1.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1
+      );
     }
-    handleResetFormClick(event) {
-        this.setState({
-            isAutoTextHidden: false,
-            selectedAddress: ''
-        });
-    }
-    settingState = (selectedAddress, isAutoTextHidden) => {
-        this.setState({
-            selectedAddress,
-            isAutoTextHidden
-        });
-    };
+    return { data: filtered };
+  };
 
-    addressData(isAutoTextHidden) {
-        let searchQuery = _.trim(this.state.selectedAddress);
-        let filtered = PostData;
+  const resetForm = () => {
+    setIsAutoTextHidden(false);
+    setSelectedAddress("");
+  };
 
-        if (searchQuery.length > 0) {
-            filtered = PostData.filter(
-                m =>
-                    m.address1
-                        .toLowerCase()
-                        .indexOf(searchQuery.toLowerCase()) > -1
-            );
-        }
-        return { data: filtered };
-    }
+  const renderDayOfWeek = type => {
+    return type === "trash"
+      ? trashNextCollectionDate()
+      : type === "recycle"
+      ? recylceNextCollectionDate()
+      : leafNextCollectionDate();
+  };
 
-    renderDayofWeek = type => {
-        return type === 'trash'
-            ? this.trashNextCollectionDate()
-            : type === 'recycle'
-            ? this.recylceNextCollectionDate()
-            : this.leafNextCollectionDate();
-    };
-    leafNextCollectionDate() {
-        const { dateFormat, dayOfWeek } = this.state;
-        const today = moment().day();
-        return today === dayOfWeek.friday
-            ? moment()
-                  .add(14, 'd')
-                  .format(dateFormat)
-            : moment()
-                  .add(12 - today, 'd')
-                  .format(dateFormat);
-    }
+  const leafNextCollectionDate = () => {
+    const today = moment().day();
+    return today === dayOfWeek.friday
+      ? moment()
+          .add(14, "d")
+          .format(dateFormat)
+      : moment()
+          .add(12 - today, "d")
+          .format(dateFormat);
+  };
 
-    recylceNextCollectionDate() {
-        const { dateFormat, dayOfWeek } = this.state;
-        const today = moment().day();
-        return today >= dayOfWeek.sunday && today < dayOfWeek.friday
-            ? moment()
-                  .add(5 - today, 'd')
-                  .format(dateFormat)
-            : moment()
-                  .add(6, 'd')
-                  .format(dateFormat);
-    }
+  const recylceNextCollectionDate = () => {
+    const today = moment().day();
+    return today >= dayOfWeek.sunday && today < dayOfWeek.friday
+      ? moment()
+          .add(5 - today, "d")
+          .format(dateFormat)
+      : moment()
+          .add(6, "d")
+          .format(dateFormat);
+  };
 
-    trashNextCollectionDate() {
-        const { dateFormat, dayOfWeek } = this.state;
-        const today = moment().day();
+  const trashNextCollectionDate = () => {
+    const today = moment().day();
 
-        return today >= dayOfWeek.monday && today < dayOfWeek.saturday
-            ? moment()
-                  .add(6 - today, 'd')
-                  .format(dateFormat)
-            : today === dayOfWeek.saturday
-            ? moment()
-                  .add(2, 'd')
-                  .format(dateFormat)
-            : moment()
-                  .add(1, 'd')
-                  .format(dateFormat);
-    }
-    render() {
-        let isAutoTextHidden = this.state.isAutoTextHidden;
-        const selectedAddress = _.trim(this.state.selectedAddress);
-        const { data } = this.addressData(isAutoTextHidden);
-        const Address =
-            data.length > 0
-                ? _.assign({
-                      address1: data[0].address1,
-                      address2: data[0].address2,
-                      city: data[0].city,
-                      state: data[0].state,
-                      postalCode: data[0].postalCode
-                  })
-                : {};
-        const fullAddress = getFullAddress(Address);
-        const renderDayofWeek = this.renderDayofWeek;
+    return today >= dayOfWeek.monday && today < dayOfWeek.saturday
+      ? moment()
+          .add(6 - today, "d")
+          .format(dateFormat)
+      : today === dayOfWeek.saturday
+      ? moment()
+          .add(2, "d")
+          .format(dateFormat)
+      : moment()
+          .add(1, "d")
+          .format(dateFormat);
+  };
 
-        return (
-            <React.Fragment>
-                <h6>Find Your Collection Schedule.</h6>
-                <div className="row">
-                    <div className="col-5">
-                        {!isAutoTextHidden && (
-                            <RenderList
-                                dataList={data}
-                                selectedAddress={selectedAddress}
-                                resetState={this.settingState}
-                            />
-                        )}
-                    </div>
-                </div>
+  const { data } = addressData(isAutoTextHidden);
+  const Address =
+    data.length > 0
+      ? _.assign({
+          address1: data[0].address1,
+          address2: data[0].address2,
+          city: data[0].city,
+          state: data[0].state,
+          postalCode: data[0].postalCode
+        })
+      : {};
+  const fullAddress = getFullAddress(Address);
 
-                {isAutoTextHidden && (
-                    <InformationSection
-                        address={fullAddress}
-                        resetForm={this.handleResetFormClick}
-                    />
-                )}
+  const handleAddressSelect = (selectedAddress, isAutoTextHidden) => {
+    setSelectedAddress(selectedAddress);
+    setIsAutoTextHidden(isAutoTextHidden);
+  };
 
-                {isAutoTextHidden && (
-                    <TrashSchedule
-                        services={getTrashService()}
-                        renderDayofWeek={renderDayofWeek}
-                    />
-                )}
-            </React.Fragment>
-        );
-    }
-}
+  return (
+    <React.Fragment>
+      <h6>Find Your Collection Schedule.</h6>
+      <div className="row">
+        <div className="col-5">
+          {!isAutoTextHidden && (
+            <RenderList
+              dataList={data}
+              selectedAddress={selectedAddress}
+              onSelect={handleAddressSelect}
+            />
+          )}
+        </div>
+      </div>
+
+      {isAutoTextHidden && (
+        <InformationSection address={fullAddress} resetForm={resetForm} />
+      )}
+
+      {isAutoTextHidden && (
+        <TrashSchedule
+          services={getTrashService()}
+          renderDayOfWeek={renderDayOfWeek}
+        />
+      )}
+    </React.Fragment>
+  );
+};
 
 export default TrashLookUp;
