@@ -21,7 +21,8 @@ test("should be able to get address results with a valid address that has data",
   userEvent.click(submitButton);
 
   // Verify a friendly message is displayed that we can't find the schedule
-  getByText(/we were unable to find your schedule/i);
+  getByText(/we were unable to find a schedule for not a real address.*/i);
+  getByText(/try another search/i);
 });
 
 test("should be able to get address results with a valid address that has data", async () => {
