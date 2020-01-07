@@ -1,5 +1,3 @@
-import * as moment from "moment";
-
 import React, { useState } from "react";
 import {
   DefaultDateFormat as dateFormat,
@@ -13,6 +11,7 @@ import TrashSchedule from "./common/trashSchedule";
 import _ from "lodash";
 import { getFullAddress } from "../services/AddressService";
 import { getTrashService } from "../services/trashService";
+import moment from "moment";
 
 const TrashLookUp = props => {
   const [selectedAddress, setSelectedAddress] = useState("");
