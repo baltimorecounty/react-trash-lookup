@@ -46,7 +46,7 @@ const TrashLookUp = props => {
     return type === "trash"
       ? trashNextCollectionDate()
       : type === "recycle"
-      ? recylceNextCollectionDate()
+      ? recycleNextCollectionDate()
       : leafNextCollectionDate();
   };
 
@@ -61,7 +61,7 @@ const TrashLookUp = props => {
           .format(dateFormat);
   };
 
-  const recylceNextCollectionDate = () => {
+  const recycleNextCollectionDate = () => {
     const today = moment().day();
     return today >= dayOfWeek.sunday && today < dayOfWeek.friday
       ? moment()
