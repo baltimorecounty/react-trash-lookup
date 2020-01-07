@@ -1,7 +1,7 @@
-import React from 'react';
-import Icon from './Icon';
-const ScheduleTable = ({ services, renderDayofWeek }) => {
+import Icon from "./Icon";
+import React from "react";
 
+const ScheduleTable = ({ services, renderDayOfWeek }) => {
   return (
     <table className="table table-bordered table-sm">
       <thead>
@@ -19,9 +19,7 @@ const ScheduleTable = ({ services, renderDayofWeek }) => {
               {service.type}
             </td>
             <td>{service.collectionDays}</td>
-            <td>
-              {renderDayofWeek(service.type.toLowerCase())}
-            </td>
+            <td>{renderDayOfWeek(service.type.toLowerCase())}</td>
           </tr>
         ))}
       </tbody>
