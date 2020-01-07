@@ -1,6 +1,6 @@
 import * as moment from "moment";
 
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import {
   DefaultDateFormat as dateFormat,
   DayOfWeekDictionary as dayOfWeek
