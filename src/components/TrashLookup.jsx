@@ -81,7 +81,7 @@ const TrashLookUp = props => {
           .format(dateFormat);
   };
 
-  const { data = [] } = addressData(isAutoTextHidden);
+  const { data = [] } = addressData();
   const Address =
     data.length > 0
       ? _.assign({
