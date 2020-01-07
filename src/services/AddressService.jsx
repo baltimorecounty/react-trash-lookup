@@ -9,7 +9,7 @@ const getFullAddress = address => {
       : `${address.address1}${`, `}${address.city}${`, `}${
           address.state
         }${` `}${address.postalCode}`
-    : "A valid address was not provided.";
+    : null;
 };
 
 export { getFullAddress };

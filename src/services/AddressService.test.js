@@ -9,7 +9,7 @@ describe("getFullAddress", () => {
     const actual = getFullAddress(emptyAddress);
 
     //assert
-    expect(actual).toEqual("A valid address was not provided.");
+    expect(actual).toEqual(null);
   });
 
   it("should return the full address when all address properties are provided", () => {
