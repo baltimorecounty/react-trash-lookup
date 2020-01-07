@@ -3,7 +3,7 @@ import React from "react";
 
 const ScheduleTable = ({ services, renderDayOfWeek }) => {
   return (
-    <table className="table table-bordered table-sm">
+    <table id="trash-schedule" className="stable table-bordered table-sm">
       <thead>
         <tr>
           <th>Type</th>
@@ -15,7 +15,7 @@ const ScheduleTable = ({ services, renderDayOfWeek }) => {
         {services.map(service => (
           <tr key={service._id}>
             <td align="center">
-              <Icon iconClass={service.type.toLowerCase()} />
+              <Icon iconClass={service.icon.toLowerCase()} />
               {service.type}
             </td>
             <td>{service.collectionDays}</td>
