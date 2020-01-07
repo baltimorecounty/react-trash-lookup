@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.1.1",
+    "date-fns": "^2.8.1",
     "font-awesome": "^4.7.0",
     "moment": "^2.24.0",
     "react": "^16.12.0",
@@ -15,6 +16,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom --coverage",
+    "watch-tests": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

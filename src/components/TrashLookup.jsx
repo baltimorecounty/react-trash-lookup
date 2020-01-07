@@ -1,6 +1,6 @@
 import {
-  GetAddressFirstOrDefault,
-  GetFormattedAddress
+  GetFormattedAddress,
+  GetTrashSchedule
 } from "../services/AddressService";
 import React, { useState } from "react";
 import {
@@ -71,21 +71,14 @@ const TrashLookUp = props => {
           .format(dateFormat);
   };
 
-  const {
-    address1,
-    address2,
-    city,
-    state,
-    postalCode
-  } = GetAddressFirstOrDefault(selectedAddress);
+  const trashSchedule = GetTrashSchedule(selectedAddress);
+  const { address, city, zip = 0 } = trashSchedule;
   const Address =
-    address1 && postalCode
+    zip > 0
       ? _.assign({
-          address1,
-          address2,
+          address,
           city,
-          state,
-          postalCode
+          zip
         })
       : {};
   const fullAddress = GetFormattedAddress(Address);
@@ -119,6 +112,7 @@ const TrashLookUp = props => {
         <TrashSchedule
           services={getTrashService()}
           renderDayOfWeek={renderDayOfWeek}
+          schedule={trashSchedule}
           address={selectedAddress}
           fullAddress={fullAddress}
           resetForm={resetForm}
