@@ -1,8 +1,7 @@
-import { DefaultDateFormat } from "../../common/Dates";
-import Icon from "./Icon";
 import React from "react";
+import ScheduleTableRow from "./ScheduleTableRow";
 
-const ScheduleTable = ({ schedule = {}, services, renderDayOfWeek }) => {
+const ScheduleTable = ({ schedule = {} }) => {
   const {
     trashDay,
     recycleDay,
