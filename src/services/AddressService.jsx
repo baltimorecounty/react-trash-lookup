@@ -19,8 +19,8 @@ import { addDays } from "date-fns";
 
 function getNextDayOfTheWeek(
   dayName,
-  excludeToday = true,
-  refDate = new Date()
+  refDate = new Date(),
+  excludeToday = true
 ) {
   const dayOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"].indexOf(
     dayName.slice(0, 3).toLowerCase()
@@ -44,9 +44,9 @@ const MockTrashSchedule = {
   trashDayOfWeek: "Monday",
   recycleDayOfWeek: "Wednesday",
   yardWasteDayOfWeek: "Friday",
-  trashDay: getNextDayOfTheWeek("Monday"),
-  recycleDay: getNextDayOfTheWeek("Wednesday"),
-  yardWasteDay: getNextDayOfTheWeek("Friday")
+  trashDay: getNextDayOfTheWeek("Monday", new Date(2020, 0, 7)),
+  recycleDay: getNextDayOfTheWeek("Wednesday", new Date(2020, 0, 7)),
+  yardWasteDay: getNextDayOfTheWeek("Friday", new Date(2020, 0, 7))
 };
 
 /**

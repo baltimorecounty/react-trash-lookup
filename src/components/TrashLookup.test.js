@@ -46,23 +46,21 @@ test("should be able to get address results with a valid address that has data",
   getByText(/try another search?/i);
   const withInTrashRow = within(withinTable.getByText(/trash/i).closest("tr"));
   const withinRecycleRow = within(
-    withinTable.getByText(/recycle/i).closest("tr")
+    withinTable.getByText(/recycling/i).closest("tr")
   );
   const withingYardWasteRow = within(
     withinTable.getByText(/yard waste/i).closest("tr")
   );
 
   // Trash
-  expect(withInTrashRow.getByText(/monday and saturday/i)).toBeInTheDocument();
-  expect(withInTrashRow.getByText("11/1/2020")).toBeInTheDocument();
+  expect(withInTrashRow.getByText(/monday/i)).toBeInTheDocument();
+  expect(withInTrashRow.getByText("1/13/2020")).toBeInTheDocument();
 
   // Recycling
-  expect(withinRecycleRow.getByText(/friday/i)).toBeInTheDocument();
-  expect(withinRecycleRow.getByText("10/1/2020")).toBeInTheDocument();
+  expect(withinRecycleRow.getByText(/wednesday/i)).toBeInTheDocument();
+  expect(withinRecycleRow.getByText("1/8/2020")).toBeInTheDocument();
 
   // Yard Waste
-  expect(
-    withingYardWasteRow.getByText(/every other friday/i)
-  ).toBeInTheDocument();
-  expect(withingYardWasteRow.getByText("17/1/2020")).toBeInTheDocument();
+  expect(withingYardWasteRow.getByText(/friday/i)).toBeInTheDocument();
+  expect(withingYardWasteRow.getByText("1/10/2020")).toBeInTheDocument();
 });
