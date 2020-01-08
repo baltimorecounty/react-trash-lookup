@@ -29,6 +29,7 @@ const MockTrashSchedule = {
   trashDay: GetNextDayOfTheWeek("Monday", new Date(2020, 0, 7)),
   recycleDay: GetNextDayOfTheWeek("Wednesday", new Date(2020, 0, 7)),
   yardWasteDay: GetNextDayOfTheWeek("Friday", new Date(2020, 0, 7))
+  /** TODO: This is still missing the every other week thing */
 };
 
 /**
