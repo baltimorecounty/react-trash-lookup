@@ -1,3 +1,4 @@
+import { GetNextDayOfTheWeek } from "../common/Dates";
 import PostData from "../Data/street.json";
 
 /**
@@ -16,24 +17,6 @@ import PostData from "../Data/street.json";
     "AREA_TRASH_DAY_2": null
  */
 
-function getNextDayOfTheWeek(
-  dayName,
-  refDate = new Date(),
-  excludeToday = true
-) {
-  const dayOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"].indexOf(
-    dayName.slice(0, 3).toLowerCase()
-  );
-  if (dayOfWeek < 0) return;
-  refDate.setHours(0, 0, 0, 0);
-  refDate.setDate(
-    refDate.getDate() +
-      !!excludeToday +
-      ((dayOfWeek + 7 - refDate.getDay() - !!excludeToday) % 7)
-  );
-  return refDate;
-}
-
 const MockTrashSchedule = {
   address: "400 WASHINGTON AVE",
   city: "Towson",
@@ -43,9 +26,9 @@ const MockTrashSchedule = {
   trashDayOfWeek: "Monday",
   recycleDayOfWeek: "Wednesday",
   yardWasteDayOfWeek: "Friday",
-  trashDay: getNextDayOfTheWeek("Monday", new Date(2020, 0, 7)),
-  recycleDay: getNextDayOfTheWeek("Wednesday", new Date(2020, 0, 7)),
-  yardWasteDay: getNextDayOfTheWeek("Friday", new Date(2020, 0, 7))
+  trashDay: GetNextDayOfTheWeek("Monday", new Date(2020, 0, 7)),
+  recycleDay: GetNextDayOfTheWeek("Wednesday", new Date(2020, 0, 7)),
+  yardWasteDay: GetNextDayOfTheWeek("Friday", new Date(2020, 0, 7))
 };
 
 /**
