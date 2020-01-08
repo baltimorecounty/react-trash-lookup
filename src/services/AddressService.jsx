@@ -2,6 +2,11 @@ import { GetNextDayOfTheWeek } from "../common/Dates";
 import axios from "axios";
 
 /**
+ * TODO: We will actually need to grab this from our api, which is not available yet.
+ * So for now we will use the mocked value
+ */
+
+/**
  *
  * "ADDRESS2": "400 WASHINGTON AVE",
     "FACILI": "COUNT",
