@@ -2,22 +2,11 @@ import React from "react";
 import ResetForm from "./ResetForm";
 import ScheduleTable from "./scheduleTable";
 
-const TrashSchedule = ({
-  services,
-  renderDayOfWeek,
-  address,
-  fullAddress,
-  resetForm,
-  schedule = {}
-}) => {
+const TrashSchedule = ({ address, resetForm, schedule = {} }) => {
   return (
     <div>
-      {fullAddress ? (
-        <ScheduleTable
-          schedule={schedule}
-          services={services}
-          renderDayOfWeek={renderDayOfWeek}
-        />
+      {Object.keys(schedule).length > 0 ? (
+        <ScheduleTable schedule={schedule} />
       ) : (
         <div className="alert alert--danger" role="alert">
           <p>We were unable to find a schedule for {address}.</p>
