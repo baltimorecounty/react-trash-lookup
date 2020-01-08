@@ -25,19 +25,19 @@ const ScheduleTable = ({ schedule = {} }) => {
           dayOfWeek={trashDayOfWeek}
           iconClass="trash"
           label="Trash"
-          nextPickUpDate={trashDay}
+          nextCollectionDate={trashDay}
         />
         <ScheduleTableRow
           dayOfWeek={recycleDayOfWeek}
           iconClass="recycle"
           label="Recycling"
-          nextPickUpDate={recycleDay}
+          nextCollectionDate={recycleDay}
         />
         <ScheduleTableRow
           dayOfWeek={yardWasteDayOfWeek}
           iconClass="leaf"
           label="Yard Waste"
-          nextPickUpDate={yardWasteDay}
+          nextCollectionDate={yardWasteDay}
         />
       </tbody>
     </table>
