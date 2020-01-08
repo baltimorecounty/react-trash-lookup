@@ -14,7 +14,7 @@ const ScheduleTableRow = ({
       {iconClass && <Icon aria-hidden="true" iconClass={iconClass} />} {label}
     </td>
     <td>{dayOfWeek}</td>
-    <td>{format(nextCollectionDate, "M/dd/yyyy")}</td>
+    <td>{format(nextCollectionDate, "M/d/yyyy")}</td>
   </tr>
 );
 
@@ -26,7 +26,7 @@ ScheduleTableRow.propTypes = {
   /** Day of week that the collection occurs */
   dayOfWeek: PropTypes.string.isRequired,
   /** Date of next collection */
-  nextPickUpDate: PropTypes.object.isRequired
+  nextCollectionDate: PropTypes.object.isRequired
 };
 
 export default ScheduleTableRow;
