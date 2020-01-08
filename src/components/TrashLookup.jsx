@@ -1,15 +1,15 @@
 import {
+  GetAddresses,
   GetFormattedAddress,
   GetTrashSchedule
 } from "../services/AddressService";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   DefaultDateFormat as dateFormat,
   DayOfWeekDictionary as dayOfWeek
 } from "../common/Dates";
 
 import InformationSection from "./common/InformationSection";
-import PostData from "../Data/street.json";
 import RenderList from "./common/renderList";
 import TrashSchedule from "./common/trashSchedule";
 import _ from "lodash";
@@ -17,6 +17,8 @@ import { getTrashService } from "../services/trashService";
 import moment from "moment";
 
 const TrashLookUp = props => {
+  const [addresses, setAddresses] = useState([]);
+  const [trashSchedule, setTrashSchedule] = useState({});
   const [selectedAddress, setSelectedAddress] = useState("");
   const [isAutoTextHidden, setIsAutoTextHidden] = useState(false);
 
@@ -24,6 +26,10 @@ const TrashLookUp = props => {
     setIsAutoTextHidden(false);
     setSelectedAddress("");
   };
+
+  useEffect(() => {
+    GetAddresses().then(setAddresses);
+  }, []);
 
   const renderDayOfWeek = type => {
     return type === "trash"
@@ -71,7 +77,10 @@ const TrashLookUp = props => {
           .format(dateFormat);
   };
 
-  const trashSchedule = GetTrashSchedule(selectedAddress);
+  if (selectedAddress) {
+    GetTrashSchedule(selectedAddress).then(setTrashSchedule);
+  }
+
   const { address, city, zip = 0 } = trashSchedule;
   const Address =
     zip > 0
@@ -96,7 +105,7 @@ const TrashLookUp = props => {
           {!isAutoTextHidden && (
             <RenderList
               name="address-lookup"
-              dataList={PostData}
+              dataList={addresses}
               selectedAddress={selectedAddress}
               onSelect={handleAddressSelect}
             />

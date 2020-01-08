@@ -1,5 +1,5 @@
 import { GetNextDayOfTheWeek } from "../common/Dates";
-import PostData from "../Data/street.json";
+import axios from "axios";
 
 /**
  *
@@ -32,6 +32,11 @@ const MockTrashSchedule = {
   /** TODO: This is still missing the every other week thing */
 };
 
+const GetAddresses = () =>
+  axios
+    .get("../Data/street.json")
+    .then(({ status, data = [] }) => (status === 200 ? data : []));
+
 /**
  * Get the first address from addresses
  * @param {string} query part of an address to query addresses
@@ -39,11 +44,16 @@ const MockTrashSchedule = {
 const GetTrashSchedule = (query = "") => {
   let searchQuery = query.trim().toLowerCase();
 
-  return searchQuery
-    ? PostData.find(m => m.address1.toLowerCase().indexOf(searchQuery) > -1)
-      ? MockTrashSchedule
-      : {}
-    : {};
+  return axios
+    .get("../Data/street.json", {
+      query: searchQuery
+    })
+    .then(({ status, data }) =>
+      status === 200 &&
+      data.find(m => m.address1.toLowerCase().indexOf(searchQuery) > -1)
+        ? MockTrashSchedule
+        : {}
+    );
 };
 
 /**
@@ -54,4 +64,4 @@ const GetFormattedAddress = ({ address = "", city = "", zip = 0 }) => {
   return zip > 0 ? `${address} ${city} ${zip}` : null;
 };
 
-export { GetTrashSchedule, GetFormattedAddress };
+export { GetAddresses, GetTrashSchedule, GetFormattedAddress };
