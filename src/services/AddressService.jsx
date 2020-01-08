@@ -46,7 +46,7 @@ const GetTrashSchedule = (query = "") => {
 };
 
 /**
- *
+ * Gets a formatted address for a given address line, city and zip
  * @param {object} address
  */
 const GetFormattedAddress = ({ address = "", city = "", zip = 0 }) => {
