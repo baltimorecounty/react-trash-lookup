@@ -1,129 +1,66 @@
-import {
-  GetAddresses,
-  GetFormattedAddress,
-  GetTrashSchedule
-} from "../services/AddressService";
+import { GetAddresses, GetTrashSchedule } from "../services/AddressService";
 import React, { useEffect, useState } from "react";
-import {
-  DefaultDateFormat as dateFormat,
-  DayOfWeekDictionary as dayOfWeek
-} from "../common/Dates";
 
 import InformationSection from "./common/InformationSection";
 import RenderList from "./common/renderList";
 import TrashSchedule from "./common/trashSchedule";
-import _ from "lodash";
-import { getTrashService } from "../services/trashService";
-import moment from "moment";
 
 const TrashLookUp = props => {
   const [addresses, setAddresses] = useState([]);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [trashSchedule, setTrashSchedule] = useState({});
   const [selectedAddress, setSelectedAddress] = useState("");
-  const [isAutoTextHidden, setIsAutoTextHidden] = useState(false);
 
   const resetForm = () => {
-    setIsAutoTextHidden(false);
+    setIsFormSubmitted(false);
     setSelectedAddress("");
+    setTrashSchedule({});
   };
 
   useEffect(() => {
     GetAddresses().then(setAddresses);
   }, []);
 
-  const renderDayOfWeek = type => {
-    return type === "trash"
-      ? trashNextCollectionDate()
-      : type === "recycle"
-      ? recycleNextCollectionDate()
-      : leafNextCollectionDate();
-  };
-
-  const leafNextCollectionDate = () => {
-    const today = moment().day();
-    return today === dayOfWeek.friday
-      ? moment()
-          .add(14, "d")
-          .format(dateFormat)
-      : moment()
-          .add(12 - today, "d")
-          .format(dateFormat);
-  };
-
-  const recycleNextCollectionDate = () => {
-    const today = moment().day();
-    return today >= dayOfWeek.sunday && today < dayOfWeek.friday
-      ? moment()
-          .add(5 - today, "d")
-          .format(dateFormat)
-      : moment()
-          .add(6, "d")
-          .format(dateFormat);
-  };
-
-  const trashNextCollectionDate = () => {
-    const today = moment().day();
-
-    return today >= dayOfWeek.monday && today < dayOfWeek.saturday
-      ? moment()
-          .add(6 - today, "d")
-          .format(dateFormat)
-      : today === dayOfWeek.saturday
-      ? moment()
-          .add(2, "d")
-          .format(dateFormat)
-      : moment()
-          .add(1, "d")
-          .format(dateFormat);
-  };
-
-  if (selectedAddress) {
-    GetTrashSchedule(selectedAddress).then(setTrashSchedule);
-  }
-
-  const { address, city, zip = 0 } = trashSchedule;
-  const Address =
-    zip > 0
-      ? _.assign({
-          address,
-          city,
-          zip
-        })
-      : {};
-  const fullAddress = GetFormattedAddress(Address);
-
-  const handleAddressSelect = (selectedAddress, isAutoTextHidden) => {
+  const handleAddressSelect = selectedAddress => {
     setSelectedAddress(selectedAddress);
-    setIsAutoTextHidden(isAutoTextHidden);
+
+    GetTrashSchedule(selectedAddress)
+      .then(setTrashSchedule)
+      .then(() => {
+        setIsFormSubmitted(true);
+      });
   };
+
+  const hasTrashSchedule = Object.keys(trashSchedule).length > 0;
 
   return (
     <React.Fragment>
       <label htmlFor="address-lookup">Find Your Collection Schedule</label>
       <div className="row">
         <div className="col-5">
-          {!isAutoTextHidden && (
+          {!hasTrashSchedule > 0 && (
             <RenderList
               name="address-lookup"
               dataList={addresses}
               selectedAddress={selectedAddress}
               onSelect={handleAddressSelect}
+              onChange={setSelectedAddress}
             />
           )}
         </div>
       </div>
 
-      {isAutoTextHidden && (
-        <InformationSection address={fullAddress} resetForm={resetForm} />
+      {hasTrashSchedule > 0 && (
+        <InformationSection
+          address={trashSchedule.address}
+          resetForm={resetForm}
+        />
       )}
 
-      {isAutoTextHidden && (
+      {isFormSubmitted && (
         <TrashSchedule
-          services={getTrashService()}
-          renderDayOfWeek={renderDayOfWeek}
           schedule={trashSchedule}
           address={selectedAddress}
-          fullAddress={fullAddress}
           resetForm={resetForm}
         />
       )}
