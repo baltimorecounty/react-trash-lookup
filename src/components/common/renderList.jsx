@@ -1,7 +1,13 @@
 import Autocomplete from "react-autocomplete";
 import React from "react";
 
-const RenderList = ({ dataList = [], selectedAddress, onSelect, name }) => {
+const RenderList = ({
+  dataList = [],
+  selectedAddress,
+  onSelect = () => {},
+  onChange = () => {},
+  name
+}) => {
   const items = dataList.map((item, index) => ({
     id: item._id,
     label: item.address1
@@ -9,6 +15,10 @@ const RenderList = ({ dataList = [], selectedAddress, onSelect, name }) => {
 
   const handleClick = () => {
     onSelect(selectedAddress, true);
+  };
+
+  const handleChange = changeEvent => {
+    onChange(changeEvent.target.value);
   };
 
   return (
@@ -28,7 +38,7 @@ const RenderList = ({ dataList = [], selectedAddress, onSelect, name }) => {
           <input id={name} name={name} {...rest} />
         )}
         value={selectedAddress}
-        onChange={e => onSelect(e.target.value, false)}
+        onChange={handleChange}
         onSelect={value => onSelect(value, true)}
       />
       <button type="button" onClick={handleClick}>
