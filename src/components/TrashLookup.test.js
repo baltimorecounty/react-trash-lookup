@@ -7,6 +7,23 @@ import TrashLookUp from "./TrashLookup";
 import userEvent from "@testing-library/user-event";
 
 //TODO: Need to add a test, where the trash data doesn't exist
+test("should be able to get address results with a valid address that has data", async () => {
+  const { getByText, getByLabelText } = render(<TrashLookUp />);
+
+  // Verify form elements on load
+  const addressInput = getByLabelText(/find your collection schedule/i);
+  const submitButton = getByText(/get schedule/i);
+
+  // Input address
+  await userEvent.type(addressInput, "Not a real address.");
+
+  // Submit the address to see the results
+  userEvent.click(submitButton);
+
+  // Verify a friendly message is displayed that we can't find the schedule
+  getByText(/we were unable to find a schedule for not a real address.*/i);
+  getByText(/try another search/i);
+});
 
 test("should be able to get address results with a valid address that has data", async () => {
   const { getByText, getByLabelText } = render(<TrashLookUp />);

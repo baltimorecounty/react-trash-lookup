@@ -1,15 +1,15 @@
-import { getFullAddress } from "./AddressService";
+import { GetFormattedAddress } from "./AddressService";
 
-describe("getFullAddress", () => {
+describe("GetFormattedAddress", () => {
   it("should return a friendly message when the address is empty", () => {
     //arrange
     const emptyAddress = {};
 
     //act
-    const actual = getFullAddress(emptyAddress);
+    const actual = GetFormattedAddress(emptyAddress);
 
     //assert
-    expect(actual).toEqual("A valid address was not provided.");
+    expect(actual).toEqual(null);
   });
 
   it("should return the full address when all address properties are provided", () => {
@@ -23,7 +23,7 @@ describe("getFullAddress", () => {
     };
 
     //act
-    const actual = getFullAddress(actualAddress);
+    const actual = GetFormattedAddress(actualAddress);
 
     //assert
     expect(actual).toEqual(
@@ -42,7 +42,7 @@ describe("getFullAddress", () => {
     };
 
     //act
-    const actual = getFullAddress(actualAddress);
+    const actual = GetFormattedAddress(actualAddress);
 
     //assert
     expect(actual).toEqual("1745 T Street Southeast1, Louisville, KY 40219");

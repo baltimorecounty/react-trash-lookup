@@ -1,7 +1,7 @@
 import Autocomplete from "react-autocomplete";
 import React from "react";
 
-const RenderList = ({ dataList, selectedAddress, onSelect, name }) => {
+const RenderList = ({ dataList = [], selectedAddress, onSelect, name }) => {
   const items = dataList.map((item, index) => ({
     id: item._id,
     label: item.address1

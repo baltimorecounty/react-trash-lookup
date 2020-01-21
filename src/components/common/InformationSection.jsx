@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
+import ResetForm from "./ResetForm";
 
-const InformationSection = props => (
+const InformationSection = ({ address, resetForm }) => (
   <div className="information-section">
     <h3>Your Schedule</h3>
-    <p>Showing collection schedule for:</p>
-    <em>{props.address}</em>
-    <p>
-      Not the right address?{' '}
-      <button type="button" color="link" onClick={props.resetForm}>
-        Try another search?
-      </button>
-    </p>
+    {address && (
+      <React.Fragment>
+        <p>Showing collection schedule for:</p>
+        <em>{address}</em>
+        <ResetForm resetForm={resetForm} />
+      </React.Fragment>
+    )}
   </div>
 );
 
